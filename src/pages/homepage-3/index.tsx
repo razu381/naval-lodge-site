@@ -6,6 +6,13 @@ import {
 import { Link } from 'react-router-dom';
 import DatePicker from '../../DatePicker';
 import SearchModal from '../../SearchModal';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -1424,6 +1431,99 @@ export default function Homepage4Creative() {
           transition: border-color 0.2s;
         }
         .hamburger:hover { border-color: var(--amber); }
+
+        /* ── SHADCN SELECT OVERRIDES ── */
+        .sticky-select-trigger {
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          padding: 0 !important;
+          height: auto !important;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 11px;
+          color: var(--text);
+          cursor: none;
+        }
+        .sticky-select-trigger span {
+          color: var(--text);
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 11px;
+        }
+        .sticky-select-trigger[data-placeholder] span {
+          color: var(--muted);
+        }
+        .sticky-select-trigger svg {
+          color: var(--amber);
+          width: 12px;
+          height: 12px;
+        }
+        .sticky-select-content {
+          background: var(--bg-2) !important;
+          border: 1px solid var(--border) !important;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+        }
+        .sticky-select-item {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 11px;
+          color: var(--text);
+          cursor: none;
+          padding: 8px 12px !important;
+          border-radius: 0 !important;
+        }
+        .sticky-select-item:hover {
+          background: rgba(232,168,66,0.1) !important;
+          color: var(--amber);
+        }
+        .sticky-select-item[data-state="checked"] {
+          background: rgba(232,168,66,0.15) !important;
+          color: var(--amber);
+        }
+
+        .search-select-trigger {
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          padding: 0 !important;
+          height: auto !important;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 12px;
+          color: var(--text);
+          cursor: none;
+        }
+        .search-select-trigger span {
+          color: var(--text);
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 12px;
+        }
+        .search-select-trigger[data-placeholder] span {
+          color: var(--muted);
+        }
+        .search-select-trigger svg {
+          color: var(--amber);
+          width: 14px;
+          height: 14px;
+        }
+        .search-select-content {
+          background: var(--bg-2) !important;
+          border: 1px solid var(--border) !important;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+        }
+        .search-select-item {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 12px;
+          color: var(--text);
+          cursor: none;
+          padding: 10px 14px !important;
+          border-radius: 0 !important;
+        }
+        .search-select-item:hover {
+          background: rgba(232,168,66,0.1) !important;
+          color: var(--amber);
+        }
+        .search-select-item[data-state="checked"] {
+          background: rgba(232,168,66,0.15) !important;
+          color: var(--amber);
+        }
       `}</style>
 
       {/* ── CUSTOM CURSOR ── */}
@@ -1437,16 +1537,19 @@ export default function Homepage4Creative() {
 
           <div className="sticky-field">
             <MapPin className="sticky-icon" style={{ width: 12, height: 12, color: 'var(--amber)' }} />
-            <select
-              className="sticky-select"
+            <Select
               value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
+              onValueChange={setSelectedLocation}
             >
-              <option value="">Select destination</option>
-              {DUMMY_LOCATIONS.map((loc) => (
-                <option key={loc} value={loc}>{loc}</option>
-              ))}
-            </select>
+              <SelectTrigger className="sticky-select-trigger">
+                <SelectValue placeholder="Select destination" />
+              </SelectTrigger>
+              <SelectContent className="sticky-select-content">
+                {DUMMY_LOCATIONS.map((loc) => (
+                  <SelectItem key={loc} value={loc} className="sticky-select-item">{loc}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="sticky-field" style={{ flex: 1.2 }}>
@@ -1460,12 +1563,17 @@ export default function Homepage4Creative() {
 
           <div className="sticky-field">
             <Users style={{ width: 12, height: 12, color: 'var(--amber)', flexShrink: 0 }} />
-            <select className="sticky-select">
-              <option>1 Room, 2 Adults</option>
-              <option>1 Room, 1 Adult</option>
-              <option>2 Rooms, 4 Adults</option>
-              <option>More Options…</option>
-            </select>
+            <Select defaultValue="1 Room, 2 Adults">
+              <SelectTrigger className="sticky-select-trigger">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="sticky-select-content">
+                <SelectItem value="1 Room, 2 Adults" className="sticky-select-item">1 Room, 2 Adults</SelectItem>
+                <SelectItem value="1 Room, 1 Adult" className="sticky-select-item">1 Room, 1 Adult</SelectItem>
+                <SelectItem value="2 Rooms, 4 Adults" className="sticky-select-item">2 Rooms, 4 Adults</SelectItem>
+                <SelectItem value="More Options" className="sticky-select-item">More Options…</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <button className="sticky-btn" onClick={() => setIsSearchOpen(true)}>
@@ -1585,16 +1693,19 @@ export default function Homepage4Creative() {
             <div className="search-body">
               <div className="search-field">
                 <span className="search-field-label">Destination</span>
-                <select
-                  className="search-select"
+                <Select
                   value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  onValueChange={setSelectedLocation}
                 >
-                  <option value="">Select base / location</option>
-                  {DUMMY_LOCATIONS.map((loc) => (
-                    <option key={loc} value={loc}>{loc}</option>
-                  ))}
-                </select>
+                  <SelectTrigger className="search-select-trigger">
+                    <SelectValue placeholder="Select base / location" />
+                  </SelectTrigger>
+                  <SelectContent className="search-select-content">
+                    {DUMMY_LOCATIONS.map((loc) => (
+                      <SelectItem key={loc} value={loc} className="search-select-item">{loc}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="search-field" style={{ flex: 1.3 }}>
                 <span className="search-field-label">Dates</span>
@@ -1607,12 +1718,17 @@ export default function Homepage4Creative() {
               </div>
               <div className="search-field">
                 <span className="search-field-label">Guests</span>
-                <select className="search-select">
-                  <option>1 Room, 2 Adults</option>
-                  <option>1 Room, 1 Adult</option>
-                  <option>2 Rooms, 4 Adults</option>
-                  <option>More Options…</option>
-                </select>
+                <Select defaultValue="1 Room, 2 Adults">
+                  <SelectTrigger className="search-select-trigger">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="search-select-content">
+                    <SelectItem value="1 Room, 2 Adults" className="search-select-item">1 Room, 2 Adults</SelectItem>
+                    <SelectItem value="1 Room, 1 Adult" className="search-select-item">1 Room, 1 Adult</SelectItem>
+                    <SelectItem value="2 Rooms, 4 Adults" className="search-select-item">2 Rooms, 4 Adults</SelectItem>
+                    <SelectItem value="More Options" className="search-select-item">More Options…</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <div className="search-footer">

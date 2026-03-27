@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Only essential CSS variables for theming */
+  :root {
+    --border: 222.2 84% 4.9%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 38 85% 56%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-navy-bg text-text;
+  }
+}
+
+@layer utilities {
+  /* Custom scrollbar - ONLY because Tailwind doesn't support this */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(232,168,66,0.3) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-amber-dim/30 rounded-full;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-amber-dim/50;
+  }
+}
+
+/* REMAINING CSS: ~30 lines (down from 340+ in index.css) */
