@@ -62,23 +62,16 @@ export default function DatePicker({ checkIn, checkOut, onCheckInChange, onCheck
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full relative group flex items-center gap-2 pl-5 pr-4 py-3 bg-stone-50 hover:bg-stone-100 border border-slate-200 focus:border-amber-500 focus:bg-white focus:ring-2 focus:ring-amber-500/10 rounded-xl text-slate-900 font-medium placeholder:text-slate-500 transition-all outline-none cursor-pointer text-left"
+        className="w-full flex items-center gap-3 bg-sand-50 hover:bg-ocean-50 border border-ocean-200 focus:border-teal-accent focus:bg-white focus:ring-2 focus:ring-teal-accent/10 rounded-xl px-4 py-3 text-ocean-900 font-medium transition-all outline-none cursor-pointer"
       >
-        <Calendar className="h-5 w-5 text-slate-400 group-hover:text-amber-500 transition-colors shrink-0" />
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-slate-900">
-            {checkIn ? formatDateDisplay(checkIn) : 'Check-in'}
-          </span>
-          <span className="text-slate-400">-</span>
-          <span className={checkOut ? 'text-slate-900' : 'text-slate-500'}>
-            {checkOut ? formatDateDisplay(checkOut) : 'Check-out'}
-          </span>
-        </div>
-        {calculateNights() > 0 && (
-          <span className="ml-auto text-xs text-amber-600 font-semibold bg-amber-50 px-2 py-1 rounded-full">
-            {calculateNights()} night{calculateNights() !== 1 ? 's' : ''}
-          </span>
-        )}
+        <Calendar className="h-5 w-5 text-ocean-400 shrink-0" />
+        <span className="text-sm text-ocean-900">
+          {checkIn ? formatDateDisplay(checkIn) : 'Check-in'}
+        </span>
+        <span className="text-sm text-ocean-400 mx-2">-</span>
+        <span className={`text-sm ${checkOut ? 'text-ocean-900' : 'text-ocean-500'}`}>
+          {checkOut ? formatDateDisplay(checkOut) : 'Check-out'}
+        </span>
       </button>
 
       {/* Calendar Popover */}
@@ -91,23 +84,23 @@ export default function DatePicker({ checkIn, checkOut, onCheckInChange, onCheck
           />
 
           {/* Calendar Panel */}
-          <div className="absolute z-[60] top-full left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 w-96">
+          <div className="absolute z-[60] top-full left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-ocean-200 p-4 w-96">
             {/* Month Navigation */}
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={() => setSelectedMonth(addDays(selectedMonth, -30))}
-                className="p-2 hover:bg-stone-100 rounded-full transition-colors"
+                className="p-2 hover:bg-ocean-50 rounded-full transition-colors group"
               >
-                <ChevronLeft className="w-5 h-5 text-slate-600" />
+                <ChevronLeft className="w-5 h-5 text-ocean-600 group-hover:text-ocean-900" />
               </button>
-              <span className="font-semibold text-lg text-slate-900">
+              <span className="font-semibold text-lg text-ocean-900">
                 {format(selectedMonth, 'MMMM yyyy')}
               </span>
               <button
                 onClick={() => setSelectedMonth(addDays(selectedMonth, 30))}
-                className="p-2 hover:bg-stone-100 rounded-full transition-colors"
+                className="p-2 hover:bg-ocean-50 rounded-full transition-colors group"
               >
-                <ChevronRight className="w-5 h-5 text-slate-600" />
+                <ChevronRight className="w-5 h-5 text-ocean-600 group-hover:text-ocean-900" />
               </button>
             </div>
 
@@ -137,19 +130,19 @@ export default function DatePicker({ checkIn, checkOut, onCheckInChange, onCheck
             />
 
             {/* Action Buttons */}
-            <div className="flex gap-2 mt-4 pt-4 border-t border-stone-100">
+            <div className="flex gap-2 mt-4 pt-4 border-t border-ocean-200">
               <button
                 onClick={() => {
                   onCheckInChange(undefined);
                   onCheckOutChange(undefined);
                 }}
-                className="flex-1 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-stone-100 rounded-xl transition-colors"
+                className="flex-1 px-4 py-2 text-sm font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-xl transition-colors"
               >
                 Clear
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="flex-1 px-4 py-2 text-sm font-medium bg-amber-500 text-slate-900 hover:bg-amber-400 rounded-xl transition-colors"
+                className="flex-1 px-4 py-2 text-sm font-medium bg-teal-accent/100 text-ocean-900 hover:bg-teal-accent/80 rounded-xl transition-colors"
               >
                 Done
               </button>
@@ -157,13 +150,13 @@ export default function DatePicker({ checkIn, checkOut, onCheckInChange, onCheck
 
             {/* Selection Info */}
             {checkIn && !checkOut && (
-              <div className="mt-3 text-center text-sm text-slate-500">
+              <div className="mt-3 text-center text-sm text-ocean-500">
                 Select check-out date
               </div>
             )}
             {checkIn && checkOut && (
               <div className="mt-3 text-center">
-                <span className="text-sm text-slate-600">{calculateNights()} night{calculateNights() !== 1 ? 's' : ''} selected</span>
+                <span className="text-sm text-ocean-600">{calculateNights()} night{calculateNights() !== 1 ? 's' : ''} selected</span>
               </div>
             )}
           </div>

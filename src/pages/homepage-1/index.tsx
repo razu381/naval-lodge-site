@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MapPin,
   Users,
   Search,
-  ShieldCheck,
-  Heart,
-  BadgeDollarSign,
-  Clock,
-  ChevronRight,
+  Shield,
   Star,
   Menu,
-  X
+  X,
+  ChevronRight,
+  ArrowRight,
+  Award,
+  Globe,
+  Wallet,
+  Clock,
+  CheckCircle2
 } from 'lucide-react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import DatePicker from '../../DatePicker';
 import SearchModal from '../../SearchModal';
-import NotFound from '../../NotFound';
 
 export default function Homepage1() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -23,14 +25,21 @@ export default function Homepage1() {
   const [checkInDate, setCheckInDate] = useState<Date | undefined>(undefined);
   const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!checkInDate) setCheckInDate(today);
     if (!checkOutDate) setCheckOutDate(tomorrow);
+    
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const dummyLocations = [
@@ -44,35 +53,81 @@ export default function Homepage1() {
     'Naval Air Station Corpus Christi, TX'
   ];
 
+  const locations = [
+    {
+      id: 1,
+      name: 'Naval Base San Diego',
+      location: 'California, USA',
+      price: 79,
+      rating: 4.9,
+      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+      badge: 'Most Popular'
+    },
+    {
+      id: 2,
+      name: 'Pearl Harbor-Hickam',
+      location: 'Hawaii, USA',
+      price: 95,
+      rating: 4.8,
+      image: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+    },
+    {
+      id: 3,
+      name: 'Oceana / Dam Neck',
+      location: 'Virginia, USA',
+      price: 72,
+      rating: 4.7,
+      image: 'https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+    },
+    {
+      id: 4,
+      name: 'Naval Station Norfolk',
+      location: 'Virginia, USA',
+      price: 68,
+      rating: 4.8,
+      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
+    }
+  ];
+
+  const stats = [
+    { value: '200+', label: 'Global Locations', icon: Globe },
+    { value: '50%', label: 'Less Than Hotels', icon: Wallet },
+    { value: '4.9', label: 'Average Rating', icon: Star },
+    { value: '500K+', label: 'Happy Families', icon: Award }
+  ];
+
   return (
-    <div className="min-h-screen bg-stone-50 font-sans text-slate-800 selection:bg-amber-200 selection:text-slate-900">
-      {/* STICKY NAVIGATION */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100/50 text-white transition-all duration-300">
+    <div className="min-h-screen bg-sand-50 font-sans text-ocean-900">
+      {/* NAVIGATION */}
+      <nav className={`transition-all duration-500 ${
+        scrolled ? 'bg-white/90 backdrop-blur-xl shadow-sm py-3' : 'bg-transparent py-5'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center">
             <div className="flex items-center gap-3 group cursor-pointer">
-              <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform duration-300">
-                <Star className="w-5 h-5 text-slate-900" fill="currentColor" />
+              <div className="w-11 h-11 bg-gradient-to-br from-teal-accent to-teal-light rounded-xl flex items-center justify-center shadow-lg shadow-teal-accent/25 group-hover:shadow-teal-accent/40 group-hover:scale-105 transition-all duration-300">
+                <Star className="w-5 h-5 text-white" fill="currentColor" />
               </div>
               <div className="flex flex-col">
-                <span className="font-serif font-semibold text-xl tracking-tight leading-none text-slate-900">NAVY LODGE</span>
-                <span className="text-[10px] tracking-[0.2em] uppercase text-amber-600 mt-1 font-medium">By Nexcom</span>
+                <span className="font-display font-semibold text-xl tracking-tight leading-none text-ocean-900">NAVY LODGE</span>
+                <span className="text-[10px] tracking-[0.2em] uppercase text-teal-accent mt-0.5 font-medium">By Nexcom</span>
               </div>
             </div>
 
-            <div className="hidden md:flex items-center space-x-8">
-              <Link to="/homepage-1" className="text-sm font-medium tracking-wide text-amber-600 hover:text-amber-700 transition-colors">Home v1</Link>
-              <Link to="/homepage-2" className="text-sm font-medium tracking-wide text-slate-600 hover:text-slate-900 transition-colors">Home v2</Link>
-              <div className="h-5 w-px bg-slate-200"></div>
-              <Link to="/locations" className="text-sm font-medium tracking-wide text-slate-600 hover:text-slate-900 transition-colors">Locations</Link>
-              <Link to="/offers" className="text-sm font-medium tracking-wide text-slate-600 hover:text-slate-900 transition-colors">Offers</Link>
-              <Link to="/about" className="text-sm font-medium tracking-wide text-slate-600 hover:text-slate-900 transition-colors">About</Link>
+            <div className="hidden md:flex items-center space-x-1">
+              <Link to="/homepage-1" className="text-sm font-medium tracking-wide text-teal-accent px-4 py-2 rounded-lg hover:text-teal-accent/80 hover:bg-teal-50 transition-all">Home v1</Link>
+              <Link to="/homepage-2" className="text-sm font-medium tracking-wide text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">Home v2</Link>
+              <Link to="/homepage-3" className="text-sm font-medium tracking-wide text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">Home v3</Link>
+              <div className="h-5 w-px bg-ocean-200 mx-2"></div>
+              <Link to="/locations" className="text-sm font-medium tracking-wide text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">Locations</Link>
+              <Link to="/offers" className="text-sm font-medium tracking-wide text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">Offers</Link>
+              <Link to="/about" className="text-sm font-medium tracking-wide text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">About</Link>
             </div>
 
             <div className="md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-slate-600 hover:text-slate-900"
+                className="p-2 text-ocean-600 hover:text-ocean-900"
               >
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -81,395 +136,459 @@ export default function Homepage1() {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white px-4 pt-2 pb-4 space-y-1 shadow-xl border-t border-slate-100">
-            <Link to="/homepage-1" className="block px-3 py-2 text-base font-medium text-amber-600 hover:bg-amber-50 rounded-md">Home v1</Link>
-            <Link to="/homepage-2" className="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 rounded-md">Home v2</Link>
-            <div className="border-t border-slate-200 my-2"></div>
-            <Link to="/locations" className="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 rounded-md">Locations</Link>
-            <Link to="/offers" className="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 rounded-md">Offers</Link>
-            <Link to="/about" className="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 rounded-md">About</Link>
+          <div className="md:hidden bg-white px-4 pt-2 pb-4 space-y-1 shadow-xl border-t border-ocean-100">
+            <Link to="/homepage-1" className="block px-3 py-2 text-base font-medium text-teal-accent hover:text-teal-accent/80 hover:bg-teal-50 rounded-md">Home v1</Link>
+            <Link to="/homepage-2" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Home v2</Link>
+            <Link to="/homepage-3" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Home v3</Link>
+            <div className="border-t border-ocean-200 my-2"></div>
+            <Link to="/locations" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Locations</Link>
+            <Link to="/offers" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Offers</Link>
+            <Link to="/about" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">About</Link>
           </div>
         )}
       </nav>
 
-      {/* STICKY BOOKING WIDGET BAR */}
-      <div className="sticky top-20 left-0 right-0 z-40 bg-white shadow-md border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center">
-            
-            <div className="flex-1 relative group w-full md:w-auto">
-              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                <MapPin className="h-5 w-5 text-slate-400 group-hover:text-amber-500 transition-colors" />
+      {/* BOOKING WIDGET */}
+      <div className="sticky top-0 z-40 pt-4">
+        <div className="bg-white shadow-lg shadow-ocean-900/5 border-b border-ocean-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+              
+              <div className="flex-1 flex items-center gap-3 bg-sand-50 hover:bg-ocean-50 border border-ocean-200 focus-within:border-teal-accent focus-within:bg-white focus-within:ring-2 focus-within:ring-teal-accent/10 rounded-xl px-4 py-3 transition-all">
+                <MapPin className="h-5 w-5 text-ocean-400 shrink-0" />
+                <select
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  className="flex-1 bg-transparent border-0 outline-none text-ocean-900 font-medium cursor-pointer appearance-none pr-8 text-sm"
+                >
+                  <option value="">Select destination</option>
+                  {dummyLocations.map((location) => (
+                    <option key={location} value={location}>{location}</option>
+                  ))}
+                </select>
               </div>
-              <select 
-                value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-stone-50 hover:bg-stone-100 border border-slate-200 focus:border-amber-500 focus:bg-white focus:ring-2 focus:ring-amber-500/10 rounded-xl text-slate-900 font-medium appearance-none transition-all outline-none cursor-pointer"
-              >
-                <option value="">Select destination</option>
-                {dummyLocations.map((location) => (
-                  <option key={location} value={location}>{location}</option>
-                ))}
-              </select>
-            </div>
 
-            <div className="flex-1 w-full md:w-auto">
-              <DatePicker
-                checkIn={checkInDate}
-                checkOut={checkOutDate}
-                onCheckInChange={setCheckInDate}
-                onCheckOutChange={setCheckOutDate}
-              />
-            </div>
-
-            <div className="flex-1 relative group w-full md:w-auto">
-              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                <Users className="h-5 w-5 text-slate-400 group-hover:text-amber-500 transition-colors" />
+              <div className="flex-1">
+                <DatePicker
+                  checkIn={checkInDate}
+                  checkOut={checkOutDate}
+                  onCheckInChange={setCheckInDate}
+                  onCheckOutChange={setCheckOutDate}
+                />
               </div>
-              <select className="w-full pl-12 pr-4 py-3 bg-stone-50 hover:bg-stone-100 border border-slate-200 focus:border-amber-500 focus:bg-white focus:ring-2 focus:ring-amber-500/10 rounded-xl text-slate-900 font-medium appearance-none transition-all outline-none cursor-pointer">
-                <option>1 Room, 2 Adults</option>
-                <option>1 Room, 1 Adult</option>
-                <option>2 Rooms, 4 Adults</option>
-                <option>More Options...</option>
-              </select>
+
+              <div className="flex-1 flex items-center gap-3 bg-sand-50 hover:bg-ocean-50 border border-ocean-200 focus-within:border-teal-accent focus-within:bg-white focus-within:ring-2 focus-within:ring-teal-accent/10 rounded-xl px-4 py-3 transition-all">
+                <Users className="h-5 w-5 text-ocean-400 shrink-0" />
+                <select className="flex-1 bg-transparent border-0 outline-none text-ocean-900 font-medium cursor-pointer appearance-none pr-8 text-sm">
+                  <option>1 Room, 2 Adults</option>
+                  <option>1 Room, 1 Adult</option>
+                  <option>2 Rooms, 4 Adults</option>
+                  <option>More Options...</option>
+                </select>
+              </div>
+
+              <button onClick={() => setIsSearchOpen(true)} className="btn-primary cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer">
+                <span>Search</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+
             </div>
-
-            <button onClick={() => setIsSearchOpen(true)} className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-8 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 hover:-translate-y-0.5 w-full md:w-auto group whitespace-nowrap">
-              Search
-              <Search className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            </button>
-
           </div>
         </div>
       </div>
 
-      <section className="relative h-[90vh] min-h-[700px] flex items-center justify-center">
-        <div className="absolute inset-0 w-full h-full">
+      {/* HERO SECTION - Diagonal Split Design */}
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden bg-ocean-950 -mt-20">
+        {/* Background Image */}
+        <div className="absolute inset-0">
           <img
             src="./beach.jpg"
-            alt="Family relaxing in a premium hotel room"
-            className="w-full h-full object-cover"
+            alt="Luxury military lodging"
+            className="w-full h-full object-cover opacity-60"
           />
-          <div className="absolute inset-0 bg-slate-900/40 mix-blend-multiply"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-ocean-950 via-ocean-950/80 to-ocean-950/40"></div>
         </div>
 
-        <div className="relative z-10 text-center px-4 w-full max-w-5xl mx-auto pt-20">
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-medium text-white tracking-tight mb-8 drop-shadow-2xl leading-[1.1]">
-            Comfort You Can Trust <br className="hidden md:block" />
-            <span className="text-amber-400 italic">Wherever Duty Takes You</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-white/95 font-light max-w-3xl mx-auto drop-shadow-lg leading-relaxed">
-            Exclusive, premium lodging for military members, veterans, and their families worldwide.
-          </p>
-        </div>
-      </section>
+        {/* Diagonal Content */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left Content */}
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 bg-teal-accent/10 border border-teal-accent/20 text-teal-light px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm animate-fade-in">
+                <Shield className="w-4 h-4" />
+                Exclusive Military Lodging
+              </div>
+              
+              <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-medium text-white leading-[1.05] animate-slide-up">
+                Comfort You Can <span className="text-teal-light italic">Trust</span>
+                <br />
+                <span className="text-ocean-300">Wherever Duty Takes You</span>
+              </h1>
+              
+              <p className="text-lg text-ocean-200 leading-relaxed max-w-lg animate-slide-up stagger-2">
+                Premium, affordable accommodations exclusively for military members, veterans, and their families worldwide.
+              </p>
 
-      <section className="bg-slate-900 text-white py-16 px-4 relative z-20">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-center md:justify-between gap-10 text-center md:text-left">
-          <div className="flex items-center gap-4 group">
-            <div className="p-3 bg-slate-800 rounded-full group-hover:bg-slate-700 transition-colors">
-              <ShieldCheck className="w-6 h-6 text-amber-400" />
-            </div>
-            <span className="font-medium text-sm md:text-base tracking-wide text-slate-200">Exclusively for Military & Families</span>
-          </div>
-          <div className="flex items-center gap-4 group">
-            <div className="p-3 bg-slate-800 rounded-full group-hover:bg-slate-700 transition-colors">
-              <MapPin className="w-6 h-6 text-amber-400" />
-            </div>
-            <span className="font-medium text-sm md:text-base tracking-wide text-slate-200">Secure Base Locations</span>
-          </div>
-          <div className="flex items-center gap-4 group">
-            <div className="p-3 bg-slate-800 rounded-full group-hover:bg-slate-700 transition-colors">
-              <BadgeDollarSign className="w-6 h-6 text-amber-400" />
-            </div>
-            <span className="font-medium text-sm md:text-base tracking-wide text-slate-200">Affordable, Tax-Free Rates</span>
-          </div>
-          <div className="flex items-center gap-4 group">
-            <div className="p-3 bg-slate-800 rounded-full group-hover:bg-slate-700 transition-colors">
-              <Star className="w-6 h-6 text-amber-400" />
-            </div>
-            <span className="font-medium text-sm md:text-base tracking-wide text-slate-200">Trusted by Service Members</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-32 px-4 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-          <div className="max-w-2xl">
-            <h2 className="font-serif text-4xl md:text-5xl font-medium text-slate-900 tracking-tight mb-4">Featured Destinations</h2>
-            <p className="text-slate-500 text-lg md:text-xl font-light leading-relaxed">Discover our most popular lodges across the globe, offering unparalleled comfort and convenience.</p>
-          </div>
-          <a href="#" className="hidden md:flex items-center gap-2 text-amber-600 font-semibold hover:text-amber-700 transition-colors group">
-            View All Locations <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </a>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          <div className="group rounded-[2rem] overflow-hidden bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 border border-stone-100/50 flex flex-col">
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                alt="San Diego Beach" 
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute top-5 right-5 bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold text-slate-900 shadow-sm">
-                POPULAR
+              {/* Stats Row */}
+              <div className="flex flex-wrap gap-8 pt-4 animate-slide-up stagger-3">
+                {stats.slice(0, 3).map((stat, idx) => (
+                  <div key={idx} className="group">
+                    <div className="flex items-baseline gap-2">
+                      <stat.icon className="w-5 h-5 text-teal-accent" />
+                      <span className="text-3xl font-display font-semibold text-white">{stat.value}</span>
+                    </div>
+                    <span className="text-sm text-ocean-400">{stat.label}</span>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="p-8 flex flex-col flex-grow">
-              <h3 className="font-serif text-2xl font-medium text-slate-900 mb-2">Naval Base San Diego</h3>
-              <p className="text-slate-500 mb-8 flex items-center gap-2 text-sm font-medium">
-                <MapPin className="w-4 h-4 text-amber-500" /> California, USA
-              </p>
-              <button className="mt-auto w-full py-4 bg-stone-50 text-slate-900 font-semibold rounded-xl hover:bg-slate-900 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md">
-                Book Now
-              </button>
-            </div>
-          </div>
 
-          <div className="group rounded-[2rem] overflow-hidden bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 border border-stone-100/50 flex flex-col">
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                alt="Hawaii Resort" 
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            </div>
-            <div className="p-8 flex flex-col flex-grow">
-              <h3 className="font-serif text-2xl font-medium text-slate-900 mb-2">Pearl Harbor-Hickam</h3>
-              <p className="text-slate-500 mb-8 flex items-center gap-2 text-sm font-medium">
-                <MapPin className="w-4 h-4 text-amber-500" /> Hawaii, USA
-              </p>
-              <button className="mt-auto w-full py-4 bg-stone-50 text-slate-900 font-semibold rounded-xl hover:bg-slate-900 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md">
-                Book Now
-              </button>
-            </div>
-          </div>
-
-          <div className="group rounded-[2rem] overflow-hidden bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 border border-stone-100/50 flex flex-col">
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                alt="Virginia Beach" 
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            </div>
-            <div className="p-8 flex flex-col flex-grow">
-              <h3 className="font-serif text-2xl font-medium text-slate-900 mb-2">Oceana / Dam Neck</h3>
-              <p className="text-slate-500 mb-8 flex items-center gap-2 text-sm font-medium">
-                <MapPin className="w-4 h-4 text-amber-500" /> Virginia, USA
-              </p>
-              <button className="mt-auto w-full py-4 bg-stone-50 text-slate-900 font-semibold rounded-xl hover:bg-slate-900 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md">
-                Book Now
-              </button>
+            {/* Right - Floating Card Visual */}
+            <div className="hidden lg:block relative animate-scale-in stagger-4">
+              <div className="relative">
+                {/* Decorative elements behind */}
+                <div className="absolute -top-8 -left-8 w-32 h-32 bg-teal-accent/20 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-coral-accent/10 rounded-full blur-3xl"></div>
+                
+                {/* Main floating card */}
+                <div className="card-floating p-6 max-w-sm mx-auto bg-ocean-900/80 backdrop-blur-xl border border-ocean-700/50">
+                  <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4">
+                    <img 
+                      src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                      alt="Premium suite"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-heading text-xl text-white">San Diego Lodge</h3>
+                      <div className="flex items-center gap-1 text-amber-400">
+                        <Star className="w-4 h-4 fill-current" />
+                        <span className="text-sm font-medium text-white">4.9</span>
+                      </div>
+                    </div>
+                    <p className="text-ocean-400 text-sm flex items-center gap-1">
+                      <MapPin className="w-4 h-4" /> California, USA
+                    </p>
+                    <div className="flex items-center justify-between pt-3 border-t border-ocean-700">
+                      <div>
+                        <span className="text-2xl font-display font-semibold text-white">$79</span>
+                        <span className="text-ocean-400 text-sm">/night</span>
+                      </div>
+                      <button className="text-teal-light text-sm font-medium hover:text-white transition-colors flex items-center gap-1 cursor-pointer">
+                        View Details <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        
-        <div className="mt-12 text-center md:hidden">
-          <a href="#" className="inline-flex items-center gap-2 text-amber-600 font-semibold hover:text-amber-700 transition-colors group">
+      </section>
+
+      {/* TRUST BADGES */}
+      <section className="bg-sand-50 py-12 border-b border-sand-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap justify-center md:justify-between gap-8">
+            {[
+              { icon: Shield, text: 'Secure Base Access' },
+              { icon: MapPin, text: '200+ Global Locations' },
+              { icon: Wallet, text: 'Tax-Free Rates' },
+              { icon: Clock, text: '24/7 Support' }
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-3 group">
+                <div className="p-2.5 bg-ocean-100 rounded-lg group-hover:bg-teal-accent/10 transition-colors">
+                  <item.icon className="w-5 h-5 text-teal-accent" />
+                </div>
+                <span className="font-medium text-sm text-ocean-700">{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURED LOCATIONS - Architectural Cards */}
+      <section className="py-24 px-4 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div className="max-w-2xl">
+            <span className="label-mono mb-3 block">Discover</span>
+            <h2 className="font-display text-4xl md:text-5xl font-medium text-ocean-900 tracking-tight">Featured Destinations</h2>
+            <p className="text-ocean-500 mt-4 text-lg">Explore our most sought-after lodges across the globe.</p>
+          </div>
+          <a href="#" className="hidden md:flex items-center gap-2 text-teal-accent font-semibold hover:text-teal-light transition-colors group">
             View All Locations <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </a>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {locations.map((loc, idx) => (
+            <div key={loc.id} className="card-architectural group cursor-pointer" style={{ animationDelay: `${idx * 0.1}s` }}>
+              <div className="relative aspect-[3/4] overflow-hidden">
+                <img 
+                  src={loc.image} 
+                  alt={loc.name} 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ocean-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                {loc.badge && (
+                  <div className="absolute top-4 left-4 bg-teal-accent text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    {loc.badge}
+                  </div>
+                )}
+                <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <button className="w-full bg-white text-ocean-900 py-3 rounded-lg font-semibold text-sm hover:bg-teal-accent hover:text-white transition-colors cursor-pointer">
+                    Book Now
+                  </button>
+                </div>
+              </div>
+              <div className="p-5">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="font-heading text-lg text-ocean-900">{loc.name}</h3>
+                  <div className="flex items-center gap-1 text-teal-accent text-sm font-semibold">
+                    <Star className="w-4 h-4 fill-current" /> {loc.rating}
+                  </div>
+                </div>
+                <p className="text-ocean-500 text-sm mb-4 flex items-center gap-1">
+                  <MapPin className="w-4 h-4" /> {loc.location}
+                </p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-display font-semibold text-ocean-900">${loc.price}</span>
+                  <span className="text-ocean-400 text-sm">/night</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="mt-8 text-center md:hidden">
+          <a href="#" className="inline-flex items-center gap-2 text-teal-accent font-semibold">
+            View All Locations <ChevronRight className="w-5 h-5" />
           </a>
         </div>
       </section>
 
-      <section className="bg-white py-32">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-slate-900 rounded-[3rem] overflow-hidden flex flex-col lg:flex-row shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]">
-            <div className="lg:w-1/2 p-12 lg:p-20 flex flex-col justify-center relative">
-              <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+      {/* PROMO SECTION - Dark Card Design */}
+      <section className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-ocean-900 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
+            <div className="lg:w-5/12 p-10 lg:p-14 flex flex-col justify-center relative overflow-hidden">
+              {/* Decorative */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-teal-accent/10 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-coral-accent/5 rounded-full blur-2xl"></div>
+              
               <div className="relative z-10">
-                <div className="inline-block bg-amber-500/10 text-amber-400 font-bold px-5 py-2 rounded-full text-xs tracking-widest uppercase mb-8 w-max border border-amber-500/20">
-                  Special Offer
-                </div>
-                <h2 className="font-serif text-4xl md:text-6xl font-medium text-white mb-6 leading-[1.1]">
-                  Save up to 15% on Extended Stays
+                <span className="label-mono bg-teal-accent/10 border border-teal-accent/20 px-3 py-1 rounded-full inline-block mb-6 text-teal-light">
+                  Limited Offer
+                </span>
+                <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-medium text-white mb-6 leading-[1.1]">
+                  Save up to <span className="text-teal-light">15%</span> on Extended Stays
                 </h2>
-                <p className="text-slate-300 text-lg md:text-xl mb-10 max-w-md font-light leading-relaxed">
-                  Whether you're on PCS orders or taking a well-deserved family vacation, enjoy significant savings when you book 7 nights or more.
+                <p className="text-ocean-300 text-lg mb-8 leading-relaxed">
+                  Whether you're on PCS orders or taking a family vacation, enjoy exclusive savings when you book 7 nights or more.
                 </p>
-                <button className="bg-white text-slate-900 hover:bg-stone-100 px-8 py-4 rounded-2xl font-semibold w-max transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                <ul className="space-y-3 mb-8">
+                  {['Complimentary breakfast', 'Free parking', 'Flexible cancellation'].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3 text-ocean-200">
+                      <CheckCircle2 className="w-5 h-5 text-teal-accent" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <button className="btn-primary cursor-pointer inline-flex items-center gap-2">
                   View Offer Details
+                  <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
             </div>
-            <div className="lg:w-1/2 relative min-h-[400px] lg:min-h-full">
+            <div className="lg:w-7/12 relative min-h-[350px] lg:min-h-full">
               <img 
                 src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                alt="Luxury hotel pool" 
+                alt="Luxury pool" 
                 className="absolute inset-0 w-full h-full object-cover"
               />
+              <div className="absolute inset-0 bg-gradient-to-r from-ocean-900/20 to-transparent"></div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-32 px-4 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-20">
-          <div className="md:w-1/2 relative">
-            <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-[0_20px_50px_-10px_rgba(0,0,0,0.15)] relative z-10">
+      {/* ABOUT SECTION - Editorial Layout */}
+      <section className="py-24 px-4 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="relative">
+            <div className="aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
               <img 
                 src="https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                alt="Military family reuniting" 
+                alt="Military family" 
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-8 -left-8 w-64 h-64 bg-amber-100 rounded-[3rem] -z-0"></div>
-            <div className="absolute -top-8 -right-8 w-32 h-32 bg-slate-100 rounded-full -z-0"></div>
+            {/* Floating badge */}
+            <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-xl max-w-xs hidden md:block">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex -space-x-2">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full bg-ocean-200 border-2 border-white"></div>
+                  ))}
+                </div>
+                <span className="text-sm font-medium text-ocean-900">500K+ Families</span>
+              </div>
+              <p className="text-ocean-500 text-sm">Trusted by military families worldwide</p>
+            </div>
+            {/* Decorative element */}
+            <div className="absolute -top-4 -left-4 w-24 h-24 border-2 border-teal-accent/30 rounded-lg -z-10"></div>
           </div>
           
-          <div className="md:w-1/2">
-            <h2 className="font-serif text-4xl md:text-6xl font-medium text-slate-900 mb-8 leading-[1.1] tracking-tight">
-              Your Home Away <br/> From Home.
+          <div>
+            <span className="label-mono mb-3 block">Our Story</span>
+            <h2 className="font-display text-4xl md:text-5xl font-medium text-ocean-900 mb-6 leading-[1.1]">
+              Your Home Away from <span className="text-teal-accent italic">Home</span>
             </h2>
-            <p className="text-lg md:text-xl text-slate-600 mb-6 font-light leading-relaxed">
-              We understand the unique lifestyle of military families. That's why Navy Lodges are designed to provide a comfortable, welcoming, and secure environment, whether you are transitioning to a new duty station or simply taking a break.
+            <p className="text-ocean-600 text-lg mb-6 leading-relaxed">
+              We understand the unique lifestyle of military families. Navy Lodges are designed to provide comfortable, welcoming, and secure environments—whether you're transitioning to a new duty station or taking a well-deserved break.
             </p>
-            <p className="text-lg md:text-xl text-slate-600 mb-10 font-light leading-relaxed">
+            <p className="text-ocean-600 text-lg mb-8 leading-relaxed">
               Enjoy spacious family suites, fully equipped kitchens, and complimentary breakfasts at select locations—all with the peace of mind that comes from staying on base.
             </p>
-            <div className="flex items-center gap-5 bg-white p-6 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-stone-100">
-              <div className="w-14 h-14 bg-amber-50 rounded-full flex items-center justify-center shrink-0">
-                <Heart className="w-7 h-7 text-amber-500" />
-              </div>
-              <span className="font-serif text-xl font-medium text-slate-900">Proudly serving those who serve.</span>
+            
+            <div className="grid grid-cols-2 gap-4 mb-8">
+              {[
+                'Spacious Suites',
+                'Kitchens Included',
+                'On-Site Parking',
+                'Pet-Friendly'
+              ].map((amenity, i) => (
+                <div key={i} className="flex items-center gap-2 text-ocean-700">
+                  <CheckCircle2 className="w-5 h-5 text-teal-accent" />
+                  {amenity}
+                </div>
+              ))}
             </div>
+            
+            <button className="btn-secondary cursor-pointer inline-flex items-center gap-2">
+              Learn More About Us
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </section>
 
-      <section className="bg-white py-32 px-4 border-t border-stone-100">
+      {/* FEATURES SECTION - Glass Cards */}
+      <section className="py-24 px-4 bg-ocean-50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="font-serif text-4xl md:text-5xl font-medium text-slate-900 tracking-tight mb-6">The Navy Lodge Difference</h2>
-            <p className="text-slate-500 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">Experience premium amenities and dedicated service tailored specifically for the military community.</p>
+          <div className="text-center mb-16">
+            <span className="label-mono mb-3 block">Why Choose Us</span>
+            <h2 className="font-display text-4xl md:text-5xl font-medium text-ocean-900 mb-4">The Navy Lodge Difference</h2>
+            <p className="text-ocean-500 text-lg max-w-2xl mx-auto">Premium amenities and dedicated service tailored specifically for the military community.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-stone-50/50 p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] border border-stone-100/50 transition-all duration-300 group">
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                <ShieldCheck className="w-8 h-8 text-slate-900" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: Shield, title: 'Safe & Secure', desc: 'Gated communities on military installations with 24/7 security.' },
+              { icon: Users, title: 'Family Designed', desc: 'Spacious rooms, pet-friendly options, and family amenities.' },
+              { icon: Wallet, title: 'Incredible Value', desc: 'Premium accommodations at affordable, tax-free rates.' },
+              { icon: Clock, title: 'Easy Booking', desc: 'Streamlined online reservations or 24/7 customer support.' }
+            ].map((feature, idx) => (
+              <div key={idx} className="card-glass p-8 group hover:bg-white/90 transition-all">
+                <div className="w-14 h-14 bg-teal-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-teal-accent transition-all duration-300">
+                  <feature.icon className="w-7 h-7 text-teal-accent group-hover:text-white transition-colors" />
+                </div>
+                <h3 className="font-heading text-xl text-ocean-900 mb-3">{feature.title}</h3>
+                <p className="text-ocean-500 text-sm leading-relaxed">{feature.desc}</p>
               </div>
-              <h3 className="font-serif text-2xl font-medium text-slate-900 mb-4">Safe & Secure</h3>
-              <p className="text-slate-600 font-light leading-relaxed">Located on secure military installations, providing peace of mind for you and your family.</p>
-            </div>
-
-            <div className="bg-stone-50/50 p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] border border-stone-100/50 transition-all duration-300 group">
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                <Users className="w-8 h-8 text-slate-900" />
-              </div>
-              <h3 className="font-serif text-2xl font-medium text-slate-900 mb-4">Family Designed</h3>
-              <p className="text-slate-600 font-light leading-relaxed">Spacious rooms, pet-friendly options, and amenities built with military families in mind.</p>
-            </div>
-
-            <div className="bg-stone-50/50 p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] border border-stone-100/50 transition-all duration-300 group">
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                <BadgeDollarSign className="w-8 h-8 text-slate-900" />
-              </div>
-              <h3 className="font-serif text-2xl font-medium text-slate-900 mb-4">Incredible Value</h3>
-              <p className="text-slate-600 font-light leading-relaxed">Enjoy premium accommodations at affordable, tax-free rates exclusive to authorized patrons.</p>
-            </div>
-
-            <div className="bg-stone-50/50 p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)] border border-stone-100/50 transition-all duration-300 group">
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                <Clock className="w-8 h-8 text-slate-900" />
-              </div>
-              <h3 className="font-serif text-2xl font-medium text-slate-900 mb-4">Easy Booking</h3>
-              <p className="text-slate-600 font-light leading-relaxed">Streamlined reservation process online or via our dedicated 24/7 customer service team.</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="relative py-40 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-slate-900"></div>
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '48px 48px' }}></div>
+      {/* CTA SECTION */}
+      <section className="relative py-32 px-4 overflow-hidden bg-ocean-900">
+        <div className="absolute inset-0 pattern-grid opacity-5"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-teal-accent/10 rounded-full blur-3xl"></div>
         
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <h2 className="font-serif text-5xl md:text-6xl font-medium text-white mb-8 tracking-tight">Ready to Book Your Stay?</h2>
-          <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-            Join thousands of military families who trust Navy Lodge for their travel and relocation needs.
+        <div className="relative z-10 max-w-3xl mx-auto text-center">
+          <h2 className="font-display text-4xl md:text-5xl font-medium text-white mb-6 tracking-tight">
+            Ready to Book Your Stay?
+          </h2>
+          <p className="text-ocean-300 text-lg md:text-xl mb-10 leading-relaxed">
+            Join hundreds of thousands of military families who trust Navy Lodge for their travel and relocation needs.
           </p>
-          <button className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-12 py-5 rounded-2xl font-semibold text-lg inline-flex items-center gap-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/30 group">
-            Check Availability <Search className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          <button onClick={() => setIsSearchOpen(true)} className="btn-primary cursor-pointer inline-flex items-center gap-3 text-lg px-10 py-5">
+            Check Availability
+            <ArrowRight className="w-5 h-5" />
           </button>
         </div>
       </section>
 
-      <footer className="bg-slate-950 text-slate-400 py-16 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 border-b border-slate-800 pb-12">
-          
+      {/* FOOTER */}
+      <footer className="bg-ocean-950 text-ocean-400 py-16 px-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 border-b border-ocean-800 pb-12">
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
-                <Star className="w-4 h-4 text-slate-900" fill="currentColor" />
+              <div className="w-8 h-8 bg-gradient-to-br from-teal-accent to-teal-light rounded-lg flex items-center justify-center">
+                <Star className="w-4 h-4 text-white" fill="currentColor" />
               </div>
-              <span className="font-bold text-xl text-white tracking-tight">NAVY LODGE</span>
+              <span className="font-display font-bold text-xl text-white tracking-tight">NAVY LODGE</span>
             </div>
             <p className="text-sm leading-relaxed mb-6">
               Providing premium, affordable, and secure lodging for military members and their families worldwide.
             </p>
-            <div className="flex gap-4">
-              <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition-colors cursor-pointer">
-                <span className="sr-only">Facebook</span>
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" /></svg>
-              </div>
-              <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition-colors cursor-pointer">
-                <span className="sr-only">Twitter</span>
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
-              </div>
+            <div className="flex gap-3">
+              {['facebook', 'twitter', 'instagram'].map(social => (
+                <div key={social} className="w-10 h-10 rounded-lg bg-ocean-900 flex items-center justify-center hover:bg-teal-accent hover:text-white transition-colors cursor-pointer">
+                  <span className="sr-only">{social}</span>
+                  <div className="w-5 h-5 bg-current rounded-sm"></div>
+                </div>
+              ))}
             </div>
           </div>
 
           <div>
             <h4 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Reservations</h4>
-            <ul className="space-y-4 text-sm">
-              <li><a href="#" className="hover:text-amber-400 transition-colors">Book a Room</a></li>
-              <li><a href="#" className="hover:text-amber-400 transition-colors">Modify/Cancel Reservation</a></li>
-              <li><a href="#" className="hover:text-amber-400 transition-colors">Special Offers</a></li>
-              <li><a href="#" className="hover:text-amber-400 transition-colors">Group Bookings</a></li>
+            <ul className="space-y-3 text-sm">
+              <li><a href="#" className="hover:text-teal-accent transition-colors">Book a Room</a></li>
+              <li><a href="#" className="hover:text-teal-accent transition-colors">Modify/Cancel</a></li>
+              <li><a href="#" className="hover:text-teal-accent transition-colors">Special Offers</a></li>
+              <li><a href="#" className="hover:text-teal-accent transition-colors">Group Bookings</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">About Us</h4>
-            <ul className="space-y-4 text-sm">
-              <li><a href="#" className="hover:text-amber-400 transition-colors">Our Story</a></li>
-              <li><a href="#" className="hover:text-amber-400 transition-colors">Locations Directory</a></li>
-              <li><a href="#" className="hover:text-amber-400 transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-amber-400 transition-colors">NEXCOM Enterprise</a></li>
+            <ul className="space-y-3 text-sm">
+              <li><a href="#" className="hover:text-teal-accent transition-colors">Our Story</a></li>
+              <li><a href="#" className="hover:text-teal-accent transition-colors">Locations</a></li>
+              <li><a href="#" className="hover:text-teal-accent transition-colors">Careers</a></li>
+              <li><a href="#" className="hover:text-teal-accent transition-colors">NEXCOM</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Contact</h4>
-            <ul className="space-y-4 text-sm">
+            <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-slate-500 shrink-0" />
+                <MapPin className="w-5 h-5 text-ocean-500 shrink-0" />
                 <span>3280 Virginia Beach Blvd.<br/>Virginia Beach, VA 23452</span>
               </li>
               <li className="flex items-center gap-3">
-                <Search className="w-5 h-5 text-slate-500 shrink-0" />
+                <Search className="w-5 h-5 text-ocean-500 shrink-0" />
                 <span>1-800-NAVY-INN</span>
               </li>
             </ul>
           </div>
-
         </div>
 
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-ocean-400">
           <p>&copy; {new Date().getFullYear()} Navy Exchange Service Command. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
-            <a href="#" className="hover:text-white transition-colors">Accessibility</a>
+            <a href="#" className="hover:text-teal-accent transition-colors">Privacy</a>
+            <a href="#" className="hover:text-teal-accent transition-colors">Terms</a>
+            <a href="#" className="hover:text-teal-accent transition-colors">Accessibility</a>
           </div>
         </div>
       </footer>
+
       <SearchModal
         open={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
