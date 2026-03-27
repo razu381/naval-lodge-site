@@ -10,6 +10,7 @@ import Offers from './Offers';
 import About from './About';
 import Signin from './Signin';
 import Signup from './Signup';
+import SearchResults from './SearchResults';
 import NotFound from './NotFound';
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
       <Route path="/about" element={<About />} />
       <Route path="/signin" element={<Signin />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/search-results" element={<SearchResults />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -20,8 +20,9 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DatePicker from '../../DatePicker';
-import { sampleHotels } from '../../SearchResults';
+import { sampleHotels } from '../../types/hotel';
 import { format } from 'date-fns';
+import { ResultsContainer } from '../../components/search-results';
 
 interface Homepage2Props {
   className?: string;
@@ -50,149 +51,6 @@ export default function Homepage2({ className }: Homepage2Props) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Inline Search Results Component
-  const InlineSearchResults = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const [shouldRender, setShouldRender] = useState(false);
-
-    useEffect(() => {
-      if (isOpen) {
-        setShouldRender(true);
-        // Small delay to allow render before starting animation
-        setTimeout(() => setIsVisible(true), 50);
-      } else {
-        setIsVisible(false);
-        // Wait for exit animation to complete before unmounting
-        setTimeout(() => setShouldRender(false), 1500);
-      }
-    }, [isOpen]);
-
-    if (!shouldRender) return null;
-
-    const formatDate = (d?: Date) => (d ? format(d, 'MMM d, yyyy') : 'Any dates');
-
-    return (
-      <div
-        className={`bg-gradient-to-b from-sand-100 to-sand-50 border-b border-ocean-200 overflow-hidden transition-all duration-[1200ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
-          isVisible ? 'max-h-[6000px] opacity-100 py-8' : 'max-h-0 opacity-0 py-0'
-        }`}
-      >
-        <style>{`
-          @keyframes fadeInUp {
-            from {
-              opacity: 0;
-              transform: translateY(40px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-          .search-result-card {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-          }
-        `}</style>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-ocean-200">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <h2 className="font-display text-2xl font-semibold text-ocean-900">Search Results</h2>
-                <span className="bg-teal-accent/20 text-teal-accent px-3 py-1 rounded-full text-sm font-medium">
-                  {sampleHotels.length} properties found
-                </span>
-              </div>
-              <div className="flex items-center gap-4 text-sm text-ocean-600">
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4 text-teal-accent" />
-                  {selectedLocation || 'All Locations'}
-                </span>
-                <span className="text-ocean-300">|</span>
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4 text-teal-accent" />
-                  {formatDate(checkInDate)} - {formatDate(checkOutDate)}
-                </span>
-              </div>
-            </div>
-            <button
-              onClick={onClose}
-              className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-ocean-50 border border-ocean-200 rounded-xl text-ocean-700 font-medium transition-all hover:shadow-lg group"
-            >
-              <ChevronUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
-              Close Results
-            </button>
-          </div>
-
-          {/* Results Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sampleHotels.slice(0, 6).map((hotel, index) => (
-              <div
-                key={hotel.id}
-                className="search-result-card bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-ocean-100 group"
-                style={{ animationDelay: `${index * 0.08}s` }}
-              >
-                {/* Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={hotel.image}
-                    alt={hotel.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  {hotel.discount && (
-                    <div className="absolute top-3 left-3 bg-teal-accent text-ocean-900 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                      {hotel.discount}
-                    </div>
-                  )}
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-lg">
-                    <Star className="w-4 h-4 text-teal-accent fill-current" />
-                    <span className="font-semibold text-sm">{hotel.rating}</span>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  <h3 className="font-heading text-lg font-semibold text-ocean-900 mb-1 line-clamp-1">{hotel.name}</h3>
-                  <p className="text-ocean-500 text-sm mb-3 line-clamp-2">{hotel.description}</p>
-
-                  <div className="flex items-center gap-2 text-sm text-ocean-600 mb-4">
-                    <MapPin className="w-4 h-4 text-teal-accent" />
-                    <span>{hotel.distance}</span>
-                  </div>
-
-                  {/* Price & CTA */}
-                  <div className="flex items-center justify-between pt-3 border-t border-ocean-100">
-                    <div>
-                      <p className="text-xs text-ocean-500">From</p>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-bold text-ocean-900">{hotel.currency}{hotel.price}</span>
-                        <span className="text-xs text-ocean-500">/night</span>
-                      </div>
-                    </div>
-                    <button className="flex items-center gap-2 bg-teal-accent hover:bg-teal-accent/80 text-ocean-900 px-4 py-2 rounded-lg font-medium text-sm transition-all hover:shadow-lg group/btn cursor-pointer">
-                      View
-                      <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Show More */}
-          {sampleHotels.length > 6 && (
-            <div className="mt-8 text-center">
-              <button className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-ocean-50 border border-ocean-200 rounded-xl text-ocean-700 font-medium transition-all hover:shadow-lg group cursor-pointer">
-                Load More Results
-                <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
 
   const dummyLocations = [
     'Naval Base San Diego, CA',
@@ -305,8 +163,15 @@ export default function Homepage2({ className }: Homepage2Props) {
         </div>
       </div>
 
-      {/* INLINE SEARCH RESULTS */}
-      <InlineSearchResults isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      {/* SEARCH RESULTS - 4 Display Methods */}
+      <ResultsContainer
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        location={selectedLocation}
+        checkIn={checkInDate}
+        checkOut={checkOutDate}
+        onViewDetails={(hotel) => console.log('View details:', hotel.name)}
+      />
 
       {/* HERO SECTION - Modern Split with Floating Elements */}
       <section className="relative pt-8 pb-20 lg:pt-12 lg:pb-32 overflow-hidden">

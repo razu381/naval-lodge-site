@@ -1,5 +1,5 @@
 import React from 'react';
-import { sampleHotels } from './SearchResults';
+import { sampleHotels } from './types/hotel';
 import { ChevronRight, MapPin, X } from 'lucide-react';
 import { format } from 'date-fns';
 import 'leaflet/dist/leaflet.css';
