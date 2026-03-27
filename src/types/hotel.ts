@@ -14,6 +14,17 @@ export interface Hotel {
   lng?: number;
 }
 
+export interface Location {
+  id: number;
+  name: string;
+  location: string;
+  price: number;
+  rating: number;
+  image: string;
+  badge?: string;
+  code: string;
+}
+
 export const sampleHotels: Hotel[] = [
   {
     id: 1,

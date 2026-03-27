@@ -1,0 +1,6 @@
+__turbopack_load_page_chunks__("/homepage-3/components/Navigation", [
+  "static/chunks/119e6xg8zs.ge.js",
+  "static/chunks/0bhwpzb90d3_y.js",
+  "static/chunks/00q721r~r5adm.js",
+  "static/chunks/turbopack-06slh6fkzq_2p.js"
+])
