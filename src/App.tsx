@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Homepage1 from './pages/homepage-1';
 import Homepage2 from './pages/homepage-2';
 import Homepage3 from './pages/homepage-3';
+import Homepage4 from './pages/homepage-4';
 import Cabins from './Cabins';
 import Inns from './Inns';
 import Locations from './Locations';
@@ -20,6 +21,7 @@ export default function App() {
       <Route path="/homepage-1" element={<Homepage1 />} />
       <Route path="/homepage-2" element={<Homepage2 />} />
       <Route path="/homepage-3" element={<Homepage3 />} />
+      <Route path="/homepage-4" element={<Homepage4 />} />
       <Route path="/cabins" element={<Cabins />} />
       <Route path="/inns" element={<Inns />} />
       <Route path="/locations" element={<Locations />} />

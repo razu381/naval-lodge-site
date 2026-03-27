@@ -103,6 +103,7 @@ export default function Homepage2({ className }: Homepage2Props) {
               <Link to="/homepage-1" className="text-sm font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">Home v1</Link>
               <Link to="/homepage-2" className="text-sm font-medium text-teal-accent hover:text-teal-accent/80 hover:bg-teal-accent/10 px-4 py-2 rounded-lg transition-all">Home v2</Link>
               <Link to="/homepage-3" className="text-sm font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">Home v3</Link>
+              <Link to="/homepage-4" className="text-sm font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">Home v4</Link>
               <div className="h-5 w-px bg-ocean-200 mx-2"></div>
               <Link to="/locations" className="text-sm font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">Locations</Link>
               <Link to="/offers" className="text-sm font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all">Offers</Link>
@@ -122,6 +123,7 @@ export default function Homepage2({ className }: Homepage2Props) {
             <Link to="/homepage-1" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Home v1</Link>
             <Link to="/homepage-2" className="block px-3 py-2 text-base font-medium text-teal-accent hover:text-teal-accent/80 hover:bg-teal-50 rounded-md">Home v2</Link>
             <Link to="/homepage-3" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Home v3</Link>
+            <Link to="/homepage-4" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Home v4</Link>
             <div className="border-t border-ocean-200 my-2"></div>
             <Link to="/locations" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Locations</Link>
             <Link to="/offers" className="block px-3 py-2 text-base font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Offers</Link>

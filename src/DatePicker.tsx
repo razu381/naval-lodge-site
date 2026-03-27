@@ -79,12 +79,12 @@ export default function DatePicker({ checkIn, checkOut, onCheckInChange, onCheck
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-50"
+            className="fixed inset-0 z-[70]"
             onClick={() => setIsOpen(false)}
           />
 
           {/* Calendar Panel */}
-          <div className="absolute z-[60] top-full left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-ocean-200 p-4 w-96">
+          <div className="absolute z-[80] top-full left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-ocean-200 p-4 w-96">
             {/* Month Navigation */}
             <div className="flex items-center justify-between mb-4">
               <button
