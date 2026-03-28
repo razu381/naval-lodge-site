@@ -6,3 +6,25 @@ coverage/
 *.log
 .env*
 !.env.example
+.next
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Next.js development
+.next/dev/
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# Process/temporary files
+*.pid
+*.seed
+*.pid.lock
+.cache/
+.parcel-cache/
