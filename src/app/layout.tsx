@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Syne, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import StoreHydrator from '@/components/shared/StoreHydrator';
 
 const syne = Syne({
   subsets: ['latin'],
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${syne.variable} ${jetbrains.variable}`}>
       <body className="bg-navy-bg text-text antialiased">
+        <StoreHydrator />
         {children}
       </body>
     </html>

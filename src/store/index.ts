@@ -32,6 +32,7 @@ export const useSearchStore = create<SearchState>()(
     }),
     {
       name: 'navy-lodge-search',
+      skipHydration: true,
     }
   )
 );
@@ -71,6 +72,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'navy-lodge-auth',
+      skipHydration: true,
     }
   )
 );

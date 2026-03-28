@@ -1,31 +1,97 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Google Fonts for light theme (HP1, HP2, HP4) */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
+@import "tailwindcss";
+
+@theme {
+  /* ── Dark theme tokens (HP3) ─────────────────── */
+  --color-navy-bg: #080C14;
+  --color-navy-bg-2: #0D1220;
+  --color-navy-bg-3: #121929;
+  --color-navy-card: #0F1623;
+  --color-amber: #E8A842;
+  --color-amber-dim: #B07E28;
+  --color-text: #EBE9E4;
+  --color-text-muted: #6B7280;
+  --color-text-muted-2: #3D4656;
+  --color-border: rgba(232, 168, 66, 0.12);
+  --color-border-2: rgba(255, 255, 255, 0.06);
+
+  /* ── Light theme tokens (HP1, HP2, HP4) ─────── */
+  --color-ocean-950: #0A1628;
+  --color-ocean-900: #0F172A;
+  --color-ocean-800: #1E293B;
+  --color-ocean-700: #334155;
+  --color-ocean-600: #475569;
+  --color-ocean-500: #64748B;
+  --color-ocean-400: #94A3B8;
+  --color-ocean-300: #CBD5E1;
+  --color-ocean-200: #E2E8F0;
+  --color-ocean-100: #F1F5F9;
+  --color-ocean-50: #F8FAFC;
+
+  --color-sand-50: #FAF9F7;
+  --color-sand-100: #F5F4F0;
+  --color-sand-200: #E8E6E1;
+  --color-sand-300: #D4D1C9;
+  --color-sand-400: #A8A49A;
+  --color-sand-500: #787569;
+  --color-sand-600: #5C5748;
+
+  --color-teal-accent: #0D9488;
+  --color-teal-light: #14B8A6;
+  --color-coral-accent: #F97066;
+
+  /* ── Fonts ───────────────────────────────────── */
+  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-heading: "DM Serif Display", ui-serif, Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-syne: var(--font-syne), sans-serif;
+  --font-jetbrains: var(--font-jetbrains), monospace;
+
+  /* ── Shadows ─────────────────────────────────── */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-floating: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-lifted: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Global base ─────────────────────────────────── */
 @layer base {
-  /* Only essential CSS variables for theming */
   :root {
     --border: 222.2 84% 4.9%;
     --input: 217.2 32.6% 17.5%;
     --ring: 38 85% 56%;
     --radius: 0.5rem;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
+    scrollbar-width: thin;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-navy-bg text-text;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-teal-accent);
+    color: white;
   }
 }
 
+/* ── Dark-theme scrollbar ────────────────────────── */
 @layer utilities {
-  /* Custom scrollbar - ONLY because Tailwind doesn't support this */
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: rgba(232,168,66,0.3) transparent;
+    scrollbar-color: rgba(232, 168, 66, 0.3) transparent;
   }
 
   .scrollbar-thin::-webkit-scrollbar {
@@ -33,16 +99,209 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    background: transparent;
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-amber-dim/30 rounded-full;
+    background: rgba(184, 126, 40, 0.3);
+    border-radius: 9999px;
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    @apply bg-amber-dim/50;
+    background: rgba(184, 126, 40, 0.5);
   }
 }
 
-/* REMAINING CSS: ~30 lines (down from 340+ in index.css) */
+/* ── Light-theme utility classes ─────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-teal-accent) 0%, var(--color-coral-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-ocean-gradient {
+  background: linear-gradient(180deg, var(--color-ocean-950) 0%, var(--color-ocean-900) 100%);
+}
+
+.pattern-dots {
+  background-image: radial-gradient(var(--color-ocean-300) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.pattern-grid {
+  background-image:
+    linear-gradient(var(--color-ocean-200) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-ocean-200) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Card variants */
+.card-editorial {
+  border-radius: 4px;
+  border: 1px solid var(--color-ocean-200);
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.card-editorial:hover {
+  border-color: var(--color-teal-accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.card-floating {
+  border-radius: 16px;
+  background: white;
+  box-shadow: var(--shadow-card);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-floating:hover {
+  box-shadow: var(--shadow-lifted);
+  transform: translateY(-8px) rotate(1deg);
+}
+
+.card-glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-teal-accent) 0%, var(--color-teal-light) 100%);
+  color: white;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -5px rgba(13, 148, 136, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-ocean-900);
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: 2px solid var(--color-ocean-200);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-teal-accent);
+  color: var(--color-teal-accent);
+}
+
+/* Label mono */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-teal-accent);
+}
+
+/* ── Animations ──────────────────────────────────── */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ── HP3/HP4 dark — marquee animation ───────────── */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  animation: marquee 20s linear infinite;
+}

@@ -16,6 +16,7 @@ export default function LocationCard({ location, variant = 'default' }: Location
         src={location.image}
         alt={location.name}
         fill
+        sizes="(max-width: 768px) 100vw, 33vw"
         className="object-cover opacity-55 grayscale-[20%] group-hover:opacity-70 group-hover:scale-105 transition-all duration-700"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-navy-bg/95 via-navy-bg/30 at-60% to-transparent" />
