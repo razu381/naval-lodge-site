@@ -93,9 +93,10 @@ export default function Homepage3() {
   const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [showStickyForm, setShowStickyForm] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
-  const [cursorRingPos, setCursorRingPos] = useState({ x: -100, y: -100 });
-  const ringRef = useRef({ x: -100, y: -100 });
+  const cursorDotRef = useRef<HTMLDivElement>(null);
+  const cursorRingRef = useRef<HTMLDivElement>(null);
+  const mousePos = useRef({ x: -100, y: -100 });
+  const ringPos = useRef({ x: -100, y: -100 });
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
@@ -114,15 +115,23 @@ export default function Homepage3() {
     const isTouch = window.matchMedia('(pointer: coarse)').matches;
     if (!isTouch) {
       const moveCursor = (e: MouseEvent) => {
-        setCursorPos({ x: e.clientX, y: e.clientY });
+        mousePos.current.x = e.clientX;
+        mousePos.current.y = e.clientY;
+        if (cursorDotRef.current) {
+          cursorDotRef.current.style.left = `${e.clientX}px`;
+          cursorDotRef.current.style.top = `${e.clientY}px`;
+        }
       };
       window.addEventListener('mousemove', moveCursor);
 
-      // Ring trails with RAF
+      // Ring trails with RAF — using refs only, no React state
       const animateRing = () => {
-        ringRef.current.x += (cursorPos.x - ringRef.current.x) * 0.12;
-        ringRef.current.y += (cursorPos.y - ringRef.current.y) * 0.12;
-        setCursorRingPos({ x: ringRef.current.x, y: ringRef.current.y });
+        ringPos.current.x += (mousePos.current.x - ringPos.current.x) * 0.12;
+        ringPos.current.y += (mousePos.current.y - ringPos.current.y) * 0.12;
+        if (cursorRingRef.current) {
+          cursorRingRef.current.style.left = `${ringPos.current.x}px`;
+          cursorRingRef.current.style.top = `${ringPos.current.y}px`;
+        }
         rafRef.current = requestAnimationFrame(animateRing);
       };
       rafRef.current = requestAnimationFrame(animateRing);
@@ -135,7 +144,7 @@ export default function Homepage3() {
     }
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [cursorPos]); // added cursorPos here to keep closure fresh or effect runs once mostly
+  }, []);
 
   return (
     <div className="bg-[#001233] text-[#EBE9E4] font-['JetBrains_Mono',monospace] min-h-screen overflow-x-hidden cursor-none selection:bg-[#FFCF01]/30 selection:text-white">
@@ -200,8 +209,8 @@ export default function Homepage3() {
       `}</style>
 
       {/* ── CUSTOM CURSOR ── */}
-      <div className="cursor-dot hidden md:block" style={{ left: cursorPos.x, top: cursorPos.y }} />
-      <div className="cursor-ring hidden md:block" style={{ left: cursorRingPos.x, top: cursorRingPos.y }} />
+      <div ref={cursorDotRef} className="cursor-dot hidden md:block" style={{ left: -100, top: -100 }} />
+      <div ref={cursorRingRef} className="cursor-ring hidden md:block" style={{ left: -100, top: -100 }} />
 
       {/* ── STICKY SEARCH BAR ── */}
       <div className={`fixed top-0 left-0 right-0 z-[200] bg-[#001B4D] border-b border-[#FFCF01]/10 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${showStickyForm ? 'translate-y-0' : '-translate-y-full'}`}>
@@ -353,7 +362,7 @@ export default function Homepage3() {
           </p>
 
           {/* Search panel */}
-          <div className="relative z-10 bg-[#001B4D] border border-[#FFCF01]/10 flex flex-col max-w-4xl">
+          <div className="relative z-10 bg-[#001B4D] border border-[#FFCF01]/10 flex flex-col w-full">
             <div className="px-5 py-3 border-b border-white/5 flex items-center gap-2.5">
               <div className="w-1.5 h-1.5 rounded-full bg-[#FFCF01] animate-pulse"></div>
               <span className="text-[9px] tracking-[0.3em] uppercase text-gray-500">

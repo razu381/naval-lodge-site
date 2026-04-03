@@ -69,18 +69,18 @@ export default function Homepage1() {
     <div className="min-h-screen bg-sand-50 font-sans text-ocean-900">
 
       {/* ── NAVIGATION ────────────────────────────── */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-xl shadow-sm py-3' : 'bg-transparent py-5'
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-[#002B5C]/95 backdrop-blur-xl shadow-sm py-3' : 'bg-[#002B5C] py-5'
         }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-11 h-11 bg-gradient-to-br from-teal-accent to-teal-light rounded-xl flex items-center justify-center shadow-lg shadow-teal-accent/25 group-hover:scale-105 transition-all duration-300">
-                <Star className="w-5 h-5 text-white" fill="currentColor" />
+              <div className="w-11 h-11 bg-gradient-to-br from-[#FFCF01] to-[#FFD84D] rounded-xl flex items-center justify-center shadow-lg shadow-[#FFCF01]/25 group-hover:scale-105 transition-all duration-300">
+                <Star className="w-5 h-5 text-[#002B5C]" fill="currentColor" />
               </div>
               <div className="flex flex-col">
-                <span className="font-display font-semibold text-xl tracking-tight leading-none text-ocean-900">NAVY LODGE</span>
-                <span className="text-[10px] tracking-[0.2em] uppercase text-teal-accent mt-0.5 font-medium">by NEXCOM Hospitality Group</span>
+                <span className="font-display font-semibold text-xl tracking-tight leading-none text-white">NAVY LODGE</span>
+                <span className="text-[10px] tracking-[0.2em] uppercase text-[#FFCF01] mt-0.5 font-medium">by NEXCOM Hospitality Group</span>
               </div>
             </Link>
 
@@ -91,30 +91,30 @@ export default function Homepage1() {
                   key={v}
                   href={`/homepage-${i + 1}`}
                   className={`text-sm font-medium px-4 py-2 rounded-lg transition-all ${i === 0
-                      ? 'text-teal-accent bg-teal-accent/10'
-                      : 'text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50'
+                      ? 'text-[#FFCF01] bg-white/10'
+                      : 'text-white hover:text-[#FFCF01] hover:bg-white/10'
                     }`}
                 >
                   Home {v}
                 </Link>
               ))}
-              <div className="h-5 w-px bg-ocean-200 mx-2" />
+              <div className="h-5 w-px bg-white/20 mx-2" />
               {NAV_LINKS.map((item) => (
                 <Link
                   key={item}
                   href={`/${item.toLowerCase()}`}
-                  className="text-sm font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 px-4 py-2 rounded-lg transition-all"
+                  className="text-sm font-medium text-white hover:text-[#FFCF01] hover:bg-white/10 px-4 py-2 rounded-lg transition-all"
                 >
                   {item}
                 </Link>
               ))}
-              <button className="ml-3 bg-teal-accent hover:bg-teal-accent/90 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-all shadow-sm">
+              <button className="ml-3 bg-[#FFCF01] hover:bg-[#FFD84D] text-[#002B5C] text-sm font-semibold px-5 py-2.5 rounded-lg transition-all shadow-lg shadow-[#FFCF01]/20">
                 Book Now
               </button>
             </div>
 
             {/* Mobile toggle */}
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 text-ocean-600">
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden p-2 text-white">
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
@@ -122,15 +122,18 @@ export default function Homepage1() {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white px-4 pt-2 pb-4 space-y-1 shadow-xl border-t border-ocean-100">
+          <div className="md:hidden bg-[#002B5C] px-4 pt-2 pb-4 space-y-1 shadow-xl border-t border-white/10">
             {NAV_VERSIONS.map((v, i) => (
               <Link key={v} href={`/homepage-${i + 1}`} onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-3 py-2 text-sm font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">Home {v}</Link>
+                className={`block px-3 py-2 text-sm font-medium ${i === 0
+                  ? 'text-[#FFCF01] bg-white/10'
+                  : 'text-white hover:text-[#FFCF01] hover:bg-white/10'
+                } rounded-md`}>Home {v}</Link>
             ))}
-            <div className="border-t border-ocean-200 my-2" />
+            <div className="border-t border-white/20 my-2" />
             {NAV_LINKS.map((item) => (
               <Link key={item} href={`/${item.toLowerCase()}`} onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-3 py-2 text-sm font-medium text-ocean-600 hover:text-ocean-900 hover:bg-ocean-50 rounded-md">{item}</Link>
+                className="block px-3 py-2 text-sm font-medium text-white hover:text-[#FFCF01] hover:bg-white/10 rounded-md">{item}</Link>
             ))}
           </div>
         )}
