@@ -22,6 +22,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import DatePicker from '@/components/shared/DatePicker';
+import SearchModal from '@/components/shared/SearchModal';
 
 const dummyLocations = [
   'Naval Base San Diego, CA',
@@ -659,6 +660,15 @@ export default function Homepage2() {
           transform: translateY(0);
         }
       `}</style>
+
+      <SearchModal
+        open={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        location={selectedLocation}
+        checkIn={checkInDate}
+        checkOut={checkOutDate}
+      />
+
     </div>
   );
 }

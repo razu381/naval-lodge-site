@@ -7,6 +7,7 @@ import {
   ArrowRight, Award, Globe, Wallet, Clock, CheckCircle2,
 } from 'lucide-react';
 import DatePicker from '@/components/shared/DatePicker';
+import SearchModal from '@/components/shared/SearchModal';
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -732,28 +733,14 @@ export default function Homepage3() {
         </span>
       </footer>
 
-      {/* ── SEARCH MODAL DUMMY OVERLAY ── */}
-      {isSearchOpen && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#001233]/80 backdrop-blur-sm" onClick={() => setIsSearchOpen(false)}></div>
-          <div className="relative bg-[#001B4D] border border-[#FFCF01]/20 p-8 max-w-sm w-full text-center z-10">
-            <div className="w-12 h-12 mx-auto bg-[#FFCF01]/10 flex items-center justify-center border border-[#FFCF01]/20 mb-5">
-              <MapPin className="text-[#FFCF01] w-6 h-6" />
-            </div>
-            <h3 className="font-['Syne',sans-serif] font-bold text-[#EBE9E4] text-xl mb-2">Searching Availability</h3>
-            <p className="text-gray-500 text-xs mb-6 font-['JetBrains_Mono',monospace]">
-              Looking up rooms for<br />
-              <span className="text-[#FFCF01] mt-1 block">{selectedLocation || 'all regions'}</span>
-            </p>
-            <button
-              onClick={() => setIsSearchOpen(false)}
-              className="bg-transparent border border-[#FFCF01] text-[#FFCF01] uppercase text-[10px] tracking-[0.15em] font-bold px-6 py-2.5 hover:bg-[#FFCF01] hover:text-[#001233] transition-colors cursor-none w-full"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      <SearchModal
+        open={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        location={selectedLocation}
+        checkIn={checkInDate}
+        checkOut={checkOutDate}
+      />
+
     </div>
   );
 }

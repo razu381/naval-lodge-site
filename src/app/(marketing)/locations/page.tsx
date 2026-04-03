@@ -10,6 +10,7 @@ import {
   Heart,
   ChevronRight
 } from 'lucide-react';
+import SearchModal from '@/components/shared/SearchModal';
 
 const locations = [
   {
@@ -66,6 +67,10 @@ export default function LocationsPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [scrolled, setScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>(undefined);
+  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -223,6 +228,15 @@ export default function LocationsPage() {
           font-family: 'JetBrains Mono', monospace;
         }
       `}</style>
+
+      <SearchModal
+        open={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        location={selectedLocation}
+        checkIn={checkInDate}
+        checkOut={checkOutDate}
+      />
+
     </div>
   );
 }

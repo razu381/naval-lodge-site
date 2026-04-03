@@ -6,6 +6,7 @@ import {
   MapPin, Users, Shield, Star, Menu, X,
   ArrowRight, Award, Globe, Wallet, Clock, CheckCircle2,
 } from 'lucide-react';
+import SearchModal from '@/components/shared/SearchModal';
 
 /* ── Data ─────────────────────────────────────────── */
 const DUMMY_LOCATIONS = [
@@ -58,6 +59,9 @@ export default function Homepage1() {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [guests, setGuests] = useState('1 Room, 2 Adults');
   const [scrolled, setScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>(undefined);
+  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -174,7 +178,7 @@ export default function Homepage1() {
                 </select>
               </div>
 
-              <button className="btn-primary cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap">
+              <button onClick={() => setIsSearchOpen(true)} className="btn-primary cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap">
                 <span>Search</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
@@ -443,7 +447,7 @@ export default function Homepage1() {
           <p className="text-ocean-300 text-lg md:text-xl mb-10 leading-relaxed">
             Join hundreds of thousands of military families who trust Navy Lodge by NEXCOM Hospitality Group for their travel and relocation needs.
           </p>
-          <button className="btn-primary cursor-pointer inline-flex items-center gap-3 text-lg px-10 py-5">
+          <button onClick={() => setIsSearchOpen(true)} className="btn-primary cursor-pointer inline-flex items-center gap-3 text-lg px-10 py-5">
             Check Availability
             <ArrowRight className="w-5 h-5" />
           </button>
@@ -505,6 +509,14 @@ export default function Homepage1() {
           </div>
         </div>
       </footer>
+
+      <SearchModal
+        open={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        location={selectedLocation}
+        checkIn={checkInDate}
+        checkOut={checkOutDate}
+      />
 
     </div>
   );
