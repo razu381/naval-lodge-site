@@ -89,7 +89,7 @@ export default function Homepage2() {
               </div>
               <div className="flex flex-col">
                 <span className="font-display font-semibold text-xl tracking-tight leading-none text-ocean-900">NAVY LODGE</span>
-                <span className="text-[10px] tracking-[0.2em] uppercase text-teal-accent mt-0.5 font-medium">By Nexcom</span>
+                <span className="text-[10px] tracking-[0.2em] uppercase text-teal-accent mt-0.5 font-medium">by NEXCOM Hospitality Group</span>
               </div>
             </Link>
 
@@ -412,7 +412,7 @@ export default function Homepage2() {
             Ready to Book Your Stay?
           </h2>
           <p className="text-white/90 text-xl md:text-2xl mb-12 max-w-2xl mx-auto leading-relaxed">
-            Join thousands of military families who trust Navy Lodge for their travel and relocation needs.
+            Join thousands of military families who trust Navy Lodge by NEXCOM Hospitality Group for their travel and relocation needs.
           </p>
           <button 
             type="button" 

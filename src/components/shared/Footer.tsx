@@ -18,8 +18,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-[11px] leading-relaxed text-text-muted max-w-[260px] mb-6">
-              Premium, affordable, and secure lodging for military members
-              and their families worldwide.
+              Award-winning hospitality. High-quality accommodations at the best value worldwide for military members and their families.
             </p>
             <div className="flex gap-2">
               {['f', '𝕏', 'in'].map((s) => (
@@ -59,7 +58,7 @@ export default function Footer() {
               Company
             </h3>
             <ul className="flex flex-col gap-3">
-              {['Our Story', 'Locations', 'Careers', 'NEXCOM'].map((item) => (
+              {['Our Story', 'Locations', 'Careers', 'NEXCOM Hospitality Group'].map((item) => (
                 <li key={item}>
                   <Link
                     href="#"
@@ -107,7 +106,7 @@ export default function Footer() {
       </div>
 
       {/* Wall Name */}
-      <span className="font-syne font-extrabold text-9xl sm:text-8xl text-transparent stroke-amber/[0.05] [-webkit-text-stroke:1px_rgba(232,168,66,0.05)] tracking-[-0.02em] leading-[0.9] block overflow-hidden whitespace-nowrap text-center pt-5 border-t border-border-2">
+      <span className="font-syne font-extrabold text-9xl sm:text-8xl text-transparent stroke-amber/[0.05] [-webkit-text-stroke:1px_rgba(255,207,1,0.05)] tracking-[-0.02em] leading-[0.9] block overflow-hidden whitespace-nowrap text-center pt-5 border-t border-border-2">
         NAVY LODGE
       </span>
     </footer>

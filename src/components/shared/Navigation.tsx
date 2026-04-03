@@ -24,7 +24,7 @@ export default function Navigation() {
               NAVY LODGE
             </span>
             <span className="block text-[8px] tracking-[0.3em] text-amber font-jetbrains">
-              By Nexcom
+              by NEXCOM Hospitality Group
             </span>
           </div>
         </Link>

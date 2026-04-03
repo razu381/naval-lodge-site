@@ -1,34 +1,38 @@
-/* Google Fonts for light theme (HP1, HP2, HP4) */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+/* Google Fonts — Montserrat (Gotham Bold alt) + Inter (Gotham body alt) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 @import "tailwindcss";
 
 @theme {
-  /* ── Dark theme tokens (HP3) ─────────────────── */
-  --color-navy-bg: #080C14;
-  --color-navy-bg-2: #0D1220;
-  --color-navy-bg-3: #121929;
-  --color-navy-card: #0F1623;
-  --color-amber: #E8A842;
-  --color-amber-dim: #B07E28;
+  /* ── Brand colors (NEXCOM Hospitality Group) ──── */
+  --color-navy-bg: #001233;
+  --color-navy-bg-2: #001B4D;
+  --color-navy-bg-3: #002352;
+  --color-navy-card: #001845;
+  --color-brand-yellow: #FFCF01;
+  --color-brand-yellow-dim: #D4AD00;
+  --color-brand-gray: #505759;
+  --color-brand-gray-light: #C7C8CA;
+  --color-brand-orange: #FAA61A;
+  --color-brand-navy: #002B5C;
   --color-text: #EBE9E4;
   --color-text-muted: #6B7280;
   --color-text-muted-2: #3D4656;
-  --color-border: rgba(232, 168, 66, 0.12);
+  --color-border: rgba(255, 207, 1, 0.12);
   --color-border-2: rgba(255, 255, 255, 0.06);
 
   /* ── Light theme tokens (HP1, HP2, HP4) ─────── */
-  --color-ocean-950: #0A1628;
-  --color-ocean-900: #0F172A;
-  --color-ocean-800: #1E293B;
-  --color-ocean-700: #334155;
-  --color-ocean-600: #475569;
-  --color-ocean-500: #64748B;
-  --color-ocean-400: #94A3B8;
-  --color-ocean-300: #CBD5E1;
-  --color-ocean-200: #E2E8F0;
-  --color-ocean-100: #F1F5F9;
-  --color-ocean-50: #F8FAFC;
+  --color-ocean-950: #001233;
+  --color-ocean-900: #002B5C;
+  --color-ocean-800: #003d7a;
+  --color-ocean-700: #1a4f8f;
+  --color-ocean-600: #3a6db5;
+  --color-ocean-500: #5a8bce;
+  --color-ocean-400: #7ea8e0;
+  --color-ocean-300: #B0C4DE;
+  --color-ocean-200: #D4DFEC;
+  --color-ocean-100: #E8EFF7;
+  --color-ocean-50: #F4F7FB;
 
   --color-sand-50: #FAF9F7;
   --color-sand-100: #F5F4F0;
@@ -38,14 +42,14 @@
   --color-sand-500: #787569;
   --color-sand-600: #5C5748;
 
-  --color-teal-accent: #0D9488;
-  --color-teal-light: #14B8A6;
-  --color-coral-accent: #F97066;
+  --color-teal-accent: #FFCF01;
+  --color-teal-light: #FFD84D;
+  --color-coral-accent: #FAA61A;
 
   /* ── Fonts ───────────────────────────────────── */
-  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
-  --font-heading: "DM Serif Display", ui-serif, Georgia, serif;
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --font-syne: var(--font-syne), sans-serif;
   --font-jetbrains: var(--font-jetbrains), monospace;
@@ -82,8 +86,8 @@
   }
 
   ::selection {
-    background-color: var(--color-teal-accent);
-    color: white;
+    background-color: var(--color-brand-yellow);
+    color: #002B5C;
   }
 }
 
@@ -91,7 +95,7 @@
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: rgba(232, 168, 66, 0.3) transparent;
+    scrollbar-color: rgba(255, 207, 1, 0.3) transparent;
   }
 
   .scrollbar-thin::-webkit-scrollbar {
@@ -103,18 +107,18 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(184, 126, 40, 0.3);
+    background: rgba(212, 173, 0, 0.3);
     border-radius: 9999px;
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: rgba(184, 126, 40, 0.5);
+    background: rgba(212, 173, 0, 0.5);
   }
 }
 
 /* ── Light-theme utility classes ─────────────────── */
 .text-gradient {
-  background: linear-gradient(135deg, var(--color-teal-accent) 0%, var(--color-coral-accent) 100%);
+  background: linear-gradient(135deg, var(--color-brand-yellow) 0%, var(--color-brand-orange) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -145,7 +149,7 @@
 }
 
 .card-editorial:hover {
-  border-color: var(--color-teal-accent);
+  border-color: var(--color-brand-yellow);
   transform: translateY(-4px);
   box-shadow: var(--shadow-card-hover);
 }
@@ -171,9 +175,9 @@
 
 /* Buttons */
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-teal-accent) 0%, var(--color-teal-light) 100%);
-  color: white;
-  font-weight: 600;
+  background: linear-gradient(135deg, var(--color-brand-yellow) 0%, var(--color-brand-orange) 100%);
+  color: #002B5C;
+  font-weight: 700;
   padding: 12px 28px;
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -183,7 +187,7 @@
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px -5px rgba(13, 148, 136, 0.4);
+  box-shadow: 0 10px 30px -5px rgba(255, 207, 1, 0.4);
 }
 
 .btn-secondary {
@@ -197,8 +201,8 @@
 }
 
 .btn-secondary:hover {
-  border-color: var(--color-teal-accent);
-  color: var(--color-teal-accent);
+  border-color: var(--color-brand-yellow);
+  color: var(--color-brand-yellow);
 }
 
 /* Label mono */
@@ -208,7 +212,7 @@
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-teal-accent);
+  color: var(--color-brand-yellow);
 }
 
 /* ── Animations ──────────────────────────────────── */

@@ -141,7 +141,7 @@ export default function Homepage4() {
                   NAVY LODGE
                 </span>
                 <span className="block text-[9px] tracking-[0.25em] uppercase text-teal-accent font-semibold mt-0.5">
-                  By Nexcom
+                  by NEXCOM Hospitality Group
                 </span>
               </div>
             </Link>
@@ -764,7 +764,7 @@ export default function Homepage4() {
                     NAVY LODGE
                   </span>
                   <span className="text-[9px] tracking-[0.3em] font-semibold text-teal-accent uppercase block mt-1">
-                    By Nexcom
+                    by NEXCOM Hospitality Group
                   </span>
                 </div>
               </Link>
@@ -816,7 +816,7 @@ export default function Homepage4() {
                 Company
               </h4>
               <ul className="space-y-4">
-                {['Our Story', 'Locations', 'Careers', 'NEXCOM'].map((item) => (
+                {['Our Story', 'Locations', 'Careers', 'NEXCOM Hospitality Group'].map((item) => (
                   <li key={item}>
                     <Link href="#" className="text-sm text-ocean-400 hover:text-white transition-colors block">
                       {item}

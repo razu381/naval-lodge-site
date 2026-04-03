@@ -80,7 +80,7 @@ export default function Homepage1() {
               </div>
               <div className="flex flex-col">
                 <span className="font-display font-semibold text-xl tracking-tight leading-none text-ocean-900">NAVY LODGE</span>
-                <span className="text-[10px] tracking-[0.2em] uppercase text-teal-accent mt-0.5 font-medium">By Nexcom</span>
+                <span className="text-[10px] tracking-[0.2em] uppercase text-teal-accent mt-0.5 font-medium">by NEXCOM Hospitality Group</span>
               </div>
             </Link>
 
@@ -438,7 +438,7 @@ export default function Homepage1() {
             Ready to Book Your Stay?
           </h2>
           <p className="text-ocean-300 text-lg md:text-xl mb-10 leading-relaxed">
-            Join hundreds of thousands of military families who trust Navy Lodge for their travel and relocation needs.
+            Join hundreds of thousands of military families who trust Navy Lodge by NEXCOM Hospitality Group for their travel and relocation needs.
           </p>
           <button className="btn-primary cursor-pointer inline-flex items-center gap-3 text-lg px-10 py-5">
             Check Availability
@@ -459,7 +459,7 @@ export default function Homepage1() {
               <span className="font-display font-bold text-xl text-white tracking-tight">NAVY LODGE</span>
             </div>
             <p className="text-sm leading-relaxed mb-6">
-              Providing premium, affordable, and secure lodging for military members and their families worldwide.
+              Award-winning hospitality. High-quality accommodations at the best value worldwide for military members and their families.
             </p>
           </div>
 
@@ -475,7 +475,7 @@ export default function Homepage1() {
           <div>
             <h4 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">About Us</h4>
             <ul className="space-y-3 text-sm">
-              {['Our Story', 'Locations', 'Careers', 'NEXCOM'].map((item) => (
+              {['Our Story', 'Locations', 'Careers', 'NEXCOM Hospitality Group'].map((item) => (
                 <li key={item}><a href="#" className="hover:text-teal-accent transition-colors">{item}</a></li>
               ))}
             </ul>

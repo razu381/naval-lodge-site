@@ -116,7 +116,7 @@ export const sampleHotels: Hotel[] = [
   },
   {
     id: 7,
-    name: "Norfolk Navy Gateway",
+    name: "Norfolk Navy Inn",
     description: "Largest Navy base lodging facility",
     distance: "0.19 miles",
     rating: 4.6,
