@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   MapPin, Users, Shield, Star, Menu, X, ChevronRight,
   ArrowRight, Award, Globe, Wallet, Clock, CheckCircle2,
@@ -88,6 +89,7 @@ const MARQUEE_ITEMS = [
 // ─── COMPONENT ───────────────────────────────────────────────────────────────
 
 export default function Homepage3() {
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState('');
   const [checkInDate, setCheckInDate] = useState<Date | undefined>(undefined);
@@ -97,6 +99,28 @@ export default function Homepage3() {
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
   const mousePos = useRef({ x: -100, y: -100 });
+
+  // Initialize dates (today and tomorrow)
+  useEffect(() => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    setCheckInDate((prev) => prev || today);
+    setCheckOutDate((prev) => prev || tomorrow);
+  }, []);
+
+  // Handle search - navigate directly to results page with accordion pattern
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (selectedLocation && selectedLocation !== '') params.set('location', selectedLocation);
+    if (checkInDate) params.set('checkIn', checkInDate.toISOString());
+    if (checkOutDate) params.set('checkOut', checkOutDate.toISOString());
+    params.set('pattern', 'accordion');
+
+    const queryString = params.toString();
+    router.push(`/search-results${queryString ? `?${queryString}` : ''}`);
+  };
   const ringPos = useRef({ x: -100, y: -100 });
   const rafRef = useRef<number>(0);
 
@@ -253,7 +277,7 @@ export default function Homepage3() {
             </select>
           </div>
 
-          <button onClick={() => setIsSearchOpen(true)} className="mt-2 md:mt-0 ml-0 md:ml-4 bg-[#FFCF01] text-[#001233] text-[10px] uppercase font-bold tracking-[0.15em] px-5 py-2.5 flex items-center justify-center gap-1.5 hover:opacity-85 transition-opacity cursor-none whitespace-nowrap w-full md:w-auto shrink-0">
+          <button onClick={handleSearch} className="mt-2 md:mt-0 ml-0 md:ml-4 bg-[#FFCF01] text-[#001233] text-[10px] uppercase font-bold tracking-[0.15em] px-5 py-2.5 flex items-center justify-center gap-1.5 hover:opacity-85 transition-opacity cursor-none whitespace-nowrap w-full md:w-auto shrink-0">
             Search <ArrowRight className="w-3 h-3" />
           </button>
         </div>
@@ -405,7 +429,7 @@ export default function Homepage3() {
             </div>
             <div className="border-t border-white/5 px-5 py-3 flex justify-between items-center">
               <span className="hidden md:block text-[9px] tracking-[0.15em] text-[#3D4656]">200+ locations · Tax-exempt rates</span>
-              <button onClick={() => setIsSearchOpen(true)} className="w-full md:w-auto font-['JetBrains_Mono',monospace] text-[10px] uppercase font-bold tracking-[0.2em] text-[#001233] bg-[#FFCF01] px-7 py-3 flex items-center justify-center gap-2 hover:opacity-85 transition-opacity cursor-none">
+              <button onClick={handleSearch} className="w-full md:w-auto font-['JetBrains_Mono',monospace] text-[10px] uppercase font-bold tracking-[0.2em] text-[#001233] bg-[#FFCF01] px-7 py-3 flex items-center justify-center gap-2 hover:opacity-85 transition-opacity cursor-none">
                 Check Availability <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -649,7 +673,7 @@ export default function Homepage3() {
             Join hundreds of thousands of military families who trust Navy Lodge by NEXCOM Hospitality Group
             for their travel and relocation needs.
           </p>
-          <button onClick={() => setIsSearchOpen(true)} className="inline-flex items-center gap-3 bg-[#FFCF01] text-[#001233] font-['JetBrains_Mono',monospace] text-[11px] font-bold tracking-[0.2em] uppercase px-10 py-4 hover:opacity-85 transition-opacity cursor-none">
+          <button onClick={handleSearch} className="inline-flex items-center gap-3 bg-[#FFCF01] text-[#001233] font-['JetBrains_Mono',monospace] text-[11px] font-bold tracking-[0.2em] uppercase px-10 py-4 hover:opacity-85 transition-opacity cursor-none">
             Check Availability <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

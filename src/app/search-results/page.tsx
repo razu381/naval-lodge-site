@@ -133,7 +133,7 @@ export default function SearchResultsPage() {
       </div>
 
       {/* Pattern-specific rendering */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {pattern === 'drawer' && (
           <motion.div
             key="drawer"

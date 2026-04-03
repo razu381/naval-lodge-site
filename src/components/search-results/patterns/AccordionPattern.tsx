@@ -15,7 +15,7 @@ interface AccordionPatternProps {
   checkOut?: Date;
 }
 
-export default function AccordionPattern({
+const AccordionPattern = React.memo(function AccordionPattern({
   hotels,
   expandedHotelId,
   onViewDetails,
@@ -75,4 +75,6 @@ export default function AccordionPattern({
       </div>
     </div>
   );
-}
+});
+
+export default AccordionPattern;

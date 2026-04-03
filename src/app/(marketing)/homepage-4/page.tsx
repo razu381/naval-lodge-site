@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   MapPin,
   Users,
@@ -20,12 +21,25 @@ import {
 import DatePicker from '@/components/shared/DatePicker';
 
 export default function Homepage4() {
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState('');
   const [checkInDate, setCheckInDate] = useState<Date | undefined>(undefined);
   const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [showStickyForm, setShowStickyForm] = useState(false);
+
+  // Handle search - navigate directly to results page with accordion pattern
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (selectedLocation && selectedLocation !== '') params.set('location', selectedLocation);
+    if (checkInDate) params.set('checkIn', checkInDate.toISOString());
+    if (checkOutDate) params.set('checkOut', checkOutDate.toISOString());
+    params.set('pattern', 'accordion');
+
+    const queryString = params.toString();
+    router.push(`/search-results${queryString ? `?${queryString}` : ''}`);
+  };
 
   useEffect(() => {
     const today = new Date();
@@ -294,7 +308,7 @@ export default function Homepage4() {
 
             {/* Search button */}
             <button
-              onClick={() => setIsSearchOpen(true)}
+              onClick={handleSearch}
               className="w-full md:w-auto mt-2 md:mt-0 bg-teal-accent hover:bg-teal-accent/90 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-all flex items-center justify-center gap-2 whitespace-nowrap shadow-md shadow-teal-accent/25 cursor-pointer"
             >
               Search <ArrowRight className="w-4 h-4" />
@@ -386,7 +400,7 @@ export default function Homepage4() {
 
             {/* Search button */}
             <button
-              onClick={() => setIsSearchOpen(true)}
+              onClick={handleSearch}
               className="bg-teal-accent hover:bg-teal-accent/90 text-white font-semibold px-8 py-4 rounded-2xl text-base transition-all flex items-center justify-center gap-2 whitespace-nowrap shadow-lg shadow-teal-accent/30 cursor-pointer"
             >
               Search <ArrowRight className="w-5 h-5" />
@@ -739,7 +753,7 @@ export default function Homepage4() {
             for their travel and relocation needs.
           </p>
           <button
-            onClick={() => setIsSearchOpen(true)}
+            onClick={handleSearch}
             className="bg-teal-accent hover:bg-white text-ocean-950 font-bold px-12 py-5 rounded-xl inline-flex items-center gap-3 text-base transition-all duration-300 shadow-2xl shadow-teal-accent/20 cursor-pointer overflow-hidden group"
           >
             <span className="relative z-10">Check Availability</span>

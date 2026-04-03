@@ -27,7 +27,7 @@ interface MasterDetailPatternProps {
   checkOut?: Date;
 }
 
-export default function MasterDetailPattern({
+const MasterDetailPattern = React.memo(function MasterDetailPattern({
   hotels,
   selectedHotel,
   onViewDetails,
@@ -197,4 +197,6 @@ export default function MasterDetailPattern({
       </div>
     </div>
   );
-}
+});
+
+export default MasterDetailPattern;

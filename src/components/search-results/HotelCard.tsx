@@ -21,7 +21,7 @@ interface HotelCardProps {
   onViewDetails: () => void;
 }
 
-export default function HotelCard({ hotel, compact = false, isSelected = false, onViewDetails }: HotelCardProps) {
+const HotelCard = React.memo(function HotelCard({ hotel, compact = false, isSelected = false, onViewDetails }: HotelCardProps) {
   const [isFavorited, setIsFavorited] = React.useState(false);
 
   return (
@@ -38,6 +38,7 @@ export default function HotelCard({ hotel, compact = false, isSelected = false, 
           <img
             src={hotel.image}
             alt={hotel.name}
+            loading="lazy"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
           {/* Overlay gradient */}
@@ -143,4 +144,6 @@ export default function HotelCard({ hotel, compact = false, isSelected = false, 
       </div>
     </div>
   );
-}
+});
+
+export default HotelCard;

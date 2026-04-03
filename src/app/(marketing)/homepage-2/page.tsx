@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   MapPin,
   Users,
@@ -54,10 +55,23 @@ const benefits = [
 ];
 
 export default function Homepage2() {
+  const router = useRouter();
   const [selectedLocation, setSelectedLocation] = useState('');
   const [checkInDate, setCheckInDate] = useState<Date | undefined>(undefined);
   const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // Handle search - navigate directly to results page with accordion pattern
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (selectedLocation && selectedLocation !== '') params.set('location', selectedLocation);
+    if (checkInDate) params.set('checkIn', checkInDate.toISOString());
+    if (checkOutDate) params.set('checkOut', checkOutDate.toISOString());
+    params.set('pattern', 'accordion');
+
+    const queryString = params.toString();
+    router.push(`/search-results${queryString ? `?${queryString}` : ''}`);
+  };
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -215,7 +229,7 @@ export default function Homepage2() {
                 </select>
               </div>
               <button
-                onClick={() => setIsSearchOpen(true)}
+                onClick={handleSearch}
                 type="button"
                 className="cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap px-8 py-3 rounded-xl bg-[#002B5C] hover:bg-[#002B5C]/90 text-white font-bold transition-all shadow-lg shadow-[#002B5C]/20 hover:shadow-[#002B5C]/30"
               >
@@ -490,9 +504,9 @@ export default function Homepage2() {
           </div>
 
           <div className="mt-20 text-center">
-            <button 
-              type="button" 
-              onClick={() => setIsSearchOpen(true)} 
+            <button
+              type="button"
+              onClick={handleSearch}
               className="inline-flex items-center gap-3 text-lg bg-[#FFCF01] hover:bg-[#FFD84D] text-[#002B5C] px-10 py-4 rounded-xl font-bold transition-all duration-300 shadow-xl shadow-[#FFCF01]/20 hover:shadow-[#FFCF01]/30 hover:-translate-y-1"
             >
               Start Your Search
@@ -528,9 +542,9 @@ export default function Homepage2() {
           <p className="text-white/80 text-xl md:text-2xl mb-12 max-w-2xl mx-auto leading-relaxed">
             Join thousands of military families who trust Navy Lodge by NEXCOM Hospitality Group for their travel and relocation needs.
           </p>
-          <button 
-            type="button" 
-            onClick={() => setIsSearchOpen(true)} 
+          <button
+            type="button"
+            onClick={handleSearch}
             className="bg-transparent border-2 border-white text-white hover:bg-[#FFCF01] hover:text-[#002B5C] hover:border-[#FFCF01] px-14 py-5 rounded-2xl font-bold text-lg inline-flex items-center gap-3 transition-all duration-400 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#FFCF01]/20 cursor-pointer"
           >
             Check Availability

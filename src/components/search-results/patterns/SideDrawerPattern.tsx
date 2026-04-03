@@ -17,7 +17,7 @@ interface SideDrawerPatternProps {
   checkOut?: Date;
 }
 
-export default function SideDrawerPattern({
+const SideDrawerPattern = React.memo(function SideDrawerPattern({
   hotels,
   selectedHotel,
   onViewDetails,
@@ -107,4 +107,6 @@ export default function SideDrawerPattern({
       </AnimatePresence>
     </>
   );
-}
+});
+
+export default SideDrawerPattern;
