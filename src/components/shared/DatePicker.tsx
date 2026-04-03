@@ -107,13 +107,13 @@ export default function DatePicker({ checkIn, checkOut, onCheckInChange, onCheck
               <DayPicker
                 month={selectedMonth}
                 onMonthChange={setSelectedMonth}
-                selected={[checkIn, checkOut].filter(Boolean) as Date[]}
+                selected={checkIn && checkOut ? { from: checkIn, to: checkOut } : undefined}
                 onDayClick={handleDateClick}
                 disabled={[{ before: today }]}
                 modifiers={{
-                  selected: (date) => isDateSelected(date),
-                  checkin: (date) => isDateCheckIn(date),
-                  checkout: (date) => isDateCheckOut(date),
+                  selected: (date) => isDateSelected(date) ?? false,
+                  checkin: (date) => isDateCheckIn(date) ?? false,
+                  checkout: (date) => isDateCheckOut(date) ?? false,
                   range: (date) =>
                     !!(checkIn && checkOut && isAfter(date, checkIn) && isBefore(date, checkOut)),
                 }}

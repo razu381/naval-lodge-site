@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   MapPin, Users, Shield, Star, Menu, X,
   ArrowRight, Award, Globe, Wallet, Clock, CheckCircle2,
 } from 'lucide-react';
 import SearchModal from '@/components/shared/SearchModal';
+import DatePicker from '@/components/shared/DatePicker';
 
 /* ── Data ─────────────────────────────────────────── */
 const DUMMY_LOCATIONS = [
@@ -55,6 +57,7 @@ const NAV_LINKS = ['Locations', 'Offers', 'About'];
 
 /* ── Component ────────────────────────────────────── */
 export default function Homepage1() {
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState('');
   const [guests, setGuests] = useState('1 Room, 2 Adults');
@@ -63,11 +66,33 @@ export default function Homepage1() {
   const [checkInDate, setCheckInDate] = useState<Date | undefined>(undefined);
   const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
 
+  // Initialize dates (today and tomorrow) like homepage 2
+  useEffect(() => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    setCheckInDate((prev) => prev || today);
+    setCheckOutDate((prev) => prev || tomorrow);
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Handle search - navigate directly to results page with accordion pattern
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (selectedLocation && selectedLocation !== '') params.set('location', selectedLocation);
+    if (checkInDate) params.set('checkIn', checkInDate.toISOString());
+    if (checkOutDate) params.set('checkOut', checkOutDate.toISOString());
+    params.set('pattern', 'accordion'); // Default to accordion pattern
+
+    const queryString = params.toString();
+    router.push(`/search-results${queryString ? `?${queryString}` : ''}`);
+  };
 
   return (
     <div className="min-h-screen bg-sand-50 font-sans text-ocean-900">
@@ -163,6 +188,11 @@ export default function Homepage1() {
                 </select>
               </div>
 
+              {/* Date Picker */}
+              <div className="flex-1 min-w-[300px]">
+                <DatePicker checkIn={checkInDate} checkOut={checkOutDate} onCheckInChange={setCheckInDate} onCheckOutChange={setCheckOutDate} />
+              </div>
+
               {/* Guests */}
               <div className="flex-1 flex items-center gap-3 bg-sand-50 hover:bg-ocean-50 border border-ocean-200 focus-within:border-teal-accent focus-within:ring-2 focus-within:ring-teal-accent/10 rounded-xl px-4 py-3 transition-all">
                 <Users className="h-5 w-5 text-ocean-400 shrink-0" />
@@ -178,7 +208,7 @@ export default function Homepage1() {
                 </select>
               </div>
 
-              <button onClick={() => setIsSearchOpen(true)} className="btn-primary cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap">
+              <button onClick={handleSearch} className="btn-primary cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap">
                 <span>Search</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
@@ -447,7 +477,7 @@ export default function Homepage1() {
           <p className="text-ocean-300 text-lg md:text-xl mb-10 leading-relaxed">
             Join hundreds of thousands of military families who trust Navy Lodge by NEXCOM Hospitality Group for their travel and relocation needs.
           </p>
-          <button onClick={() => setIsSearchOpen(true)} className="btn-primary cursor-pointer inline-flex items-center gap-3 text-lg px-10 py-5">
+          <button onClick={handleSearch} className="btn-primary cursor-pointer inline-flex items-center gap-3 text-lg px-10 py-5">
             Check Availability
             <ArrowRight className="w-5 h-5" />
           </button>

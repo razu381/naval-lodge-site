@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, MapPin, X, ExternalLink } from 'lucide-react';
+import { Calendar, MapPin, ArrowLeft, Home } from 'lucide-react';
 import { format } from 'date-fns';
-import { sampleHotels, Hotel } from '@/types/hotel';
+import Link from 'next/link';
+import { Hotel, sampleHotels } from '@/types/hotel';
 import SideDrawerPattern from '@/components/search-results/patterns/SideDrawerPattern';
 import AccordionPattern from '@/components/search-results/patterns/AccordionPattern';
 import MasterDetailPattern from '@/components/search-results/patterns/MasterDetailPattern';
@@ -13,44 +14,65 @@ import PatternSwitcher from '@/components/search-results/PatternSwitcher';
 
 type Pattern = 'drawer' | 'accordion' | 'split';
 
-interface SearchModalProps {
-  open: boolean;
-  onClose: () => void;
-  location?: string;
-  checkIn?: Date;
-  checkOut?: Date;
+interface SearchResultsPageProps {
+  searchParams?: {
+    location?: string;
+    checkIn?: string;
+    checkOut?: string;
+    pattern?: string;
+  };
 }
 
-export default function SearchModal({ open, onClose, location, checkIn, checkOut }: SearchModalProps) {
+export default function SearchResultsPage() {
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const [pattern, setPattern] = useState<Pattern>('drawer');
+  const [mounted, setMounted] = useState(false);
+  const initialPatternRef = useRef<Pattern | null>(null);
+
+  const [pattern, setPattern] = useState<Pattern>(() => {
+    const patternParam = searchParams.get('pattern');
+    if (patternParam && ['drawer', 'accordion', 'split'].includes(patternParam)) {
+      return patternParam as Pattern;
+    }
+    return 'drawer';
+  });
+
   const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
   const [expandedHotelId, setExpandedHotelId] = useState<number | null>(null);
-  const [mounted, setMounted] = useState(false);
 
-  // Load saved pattern preference from localStorage
+  // Get search parameters from URL
+  const searchLocation = searchParams.get('location') || 'All Locations';
+  const checkInParam = searchParams.get('checkIn');
+  const checkOutParam = searchParams.get('checkOut');
+
+  const checkIn = checkInParam ? new Date(checkInParam) : undefined;
+  const checkOut = checkOutParam ? new Date(checkOutParam) : undefined;
+
+  // Load saved pattern preference from localStorage on mount
   useEffect(() => {
     setMounted(true);
+    // Store initial pattern from URL
+    initialPatternRef.current = pattern;
     const saved = localStorage.getItem('preferred-pattern');
     if (saved && ['drawer', 'accordion', 'split'].includes(saved)) {
       setPattern(saved as Pattern);
     }
   }, []);
 
-  // Save pattern preference to localStorage
+  // Save pattern preference to localStorage and update URL only when pattern changes
   useEffect(() => {
-    if (mounted) {
+    if (mounted && initialPatternRef.current !== pattern) {
       localStorage.setItem('preferred-pattern', pattern);
-    }
-  }, [pattern, mounted]);
 
-  // Reset states when modal closes
-  useEffect(() => {
-    if (!open) {
-      setSelectedHotel(null);
-      setExpandedHotelId(null);
+      // Update URL without refreshing
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('pattern', pattern);
+      router.replace(`/search-results?${params.toString()}`, { scroll: false });
+
+      // Update ref after updating
+      initialPatternRef.current = pattern;
     }
-  }, [open]);
+  }, [pattern, searchParams, router, mounted]);
 
   const handleViewDetails = (hotel: Hotel) => {
     setSelectedHotel(hotel);
@@ -71,60 +93,41 @@ export default function SearchModal({ open, onClose, location, checkIn, checkOut
     setExpandedHotelId(null);
   };
 
-  const handleViewFullResults = () => {
-    // Build URL with search parameters
-    const params = new URLSearchParams();
-    if (location && location !== '') params.set('location', location);
-    if (checkIn) params.set('checkIn', checkIn.toISOString());
-    if (checkOut) params.set('checkOut', checkOut.toISOString());
-    params.set('pattern', pattern);
-
-    const queryString = params.toString();
-    router.push(`/search-results${queryString ? `?${queryString}` : ''}`);
-    onClose();
-  };
-
-  const formatDate = (d?: Date) => (d ? format(d, 'MMM d, yyyy') : 'Any dates');
-
-  if (!open) return null;
+  const formatDate = (date: Date) => format(date, 'MMM d, yyyy');
 
   return (
-    <div className="fixed inset-0 z-60 bg-sand-50 font-sans text-ocean-800">
+    <div className="min-h-screen bg-sand-50 font-sans text-ocean-800">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-ocean-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            {/* Search Info */}
-            <div className="flex items-center gap-4 text-sm">
-              <button onClick={onClose} className="p-1 hover:bg-ocean-100 rounded-full transition-colors">
-                <X className="w-5 h-5 text-ocean-600" />
-              </button>
-              <span className="text-ocean-500">Searching:</span>
-              <span className="font-semibold text-teal-accent">{location || 'All Locations'}</span>
-              {checkIn && checkOut && (
-                <>
-                  <span className="text-ocean-400">|</span>
-                  <span className="flex items-center gap-1 text-ocean-600">
-                    <Calendar className="w-4 h-4" />
-                    {formatDate(checkIn)} - {formatDate(checkOut)}
-                  </span>
-                </>
-              )}
-              <span className="text-ocean-500">{sampleHotels.length} results found</span>
+            {/* Back Button and Search Info */}
+            <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className="p-2 hover:bg-ocean-100 rounded-full transition-colors"
+                title="Back to home"
+              >
+                <ArrowLeft className="w-5 h-5 text-ocean-600" />
+              </Link>
+              <div className="flex items-center gap-4 text-sm">
+                <span className="text-ocean-500">Searching:</span>
+                <span className="font-semibold text-teal-accent">{searchLocation}</span>
+                {checkIn && checkOut && (
+                  <>
+                    <span className="text-ocean-400">|</span>
+                    <span className="flex items-center gap-1 text-ocean-600">
+                      <Calendar className="w-4 h-4" />
+                      {formatDate(checkIn)} - {formatDate(checkOut)}
+                    </span>
+                  </>
+                )}
+                <span className="text-ocean-500">{sampleHotels.length} results found</span>
+              </div>
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handleViewFullResults}
-                className="flex items-center gap-2 text-sm px-4 py-2 bg-teal-accent hover:bg-teal-accent/80 text-ocean-900 rounded-lg font-medium transition-colors"
-              >
-                <ExternalLink className="w-4 h-4" />
-                <span className="hidden sm:inline">Full Results</span>
-                <span className="sm:hidden">Full</span>
-              </button>
-              <PatternSwitcher current={pattern} onChange={handlePatternChange} />
-            </div>
+            {/* Pattern Switcher */}
+            <PatternSwitcher current={pattern} onChange={handlePatternChange} />
           </div>
         </div>
       </div>

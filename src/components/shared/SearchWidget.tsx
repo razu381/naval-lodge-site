@@ -1,7 +1,8 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { MapPin, Users, Calendar, ArrowRight } from 'lucide-react';
-import { useSearchStore, useUIStore } from '@/store';
+import { useSearchStore } from '@/store';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DUMMY_LOCATIONS } from '@/data/constants';
 
@@ -10,8 +11,19 @@ interface SearchWidgetProps {
 }
 
 export default function SearchWidget({ variant = 'full' }: SearchWidgetProps) {
-  const { location, setLocation, guests, setGuests } = useSearchStore();
-  const { openSearchModal } = useUIStore();
+  const router = useRouter();
+  const { location, setLocation, guests, setGuests, checkIn, checkOut } = useSearchStore();
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (location && location !== '') params.set('location', location);
+    if (checkIn) params.set('checkIn', checkIn.toISOString());
+    if (checkOut) params.set('checkOut', checkOut.toISOString());
+    params.set('pattern', 'accordion'); // Default to accordion pattern
+
+    const queryString = params.toString();
+    router.push(`/search-results${queryString ? `?${queryString}` : ''}`);
+  };
 
   if (variant === 'sticky') {
     return (
@@ -53,7 +65,7 @@ export default function SearchWidget({ variant = 'full' }: SearchWidgetProps) {
 
           {/* Search Button */}
           <button
-            onClick={openSearchModal}
+            onClick={handleSearch}
             className="bg-amber text-navy-bg font-jetbrains text-[10px] font-bold tracking-[0.15em] uppercase px-5 py-2.5 flex items-center gap-1.5 hover:opacity-85 transition-opacity ml-4 flex-shrink-0"
           >
             Search <ArrowRight className="w-3 h-3" />
@@ -131,7 +143,7 @@ export default function SearchWidget({ variant = 'full' }: SearchWidgetProps) {
           200+ locations · Tax-exempt rates
         </span>
         <button
-          onClick={openSearchModal}
+          onClick={handleSearch}
           className="bg-amber text-navy-bg font-jetbrains text-[10px] font-bold tracking-[0.2em] uppercase px-7 py-3 flex items-center gap-2 hover:opacity-85 transition-opacity"
         >
           Check Availability <ArrowRight className="w-3.5 h-3.5" />
