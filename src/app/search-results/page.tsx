@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, MapPin, ArrowLeft, Home } from 'lucide-react';
@@ -23,7 +23,7 @@ interface SearchResultsPageProps {
   };
 }
 
-export default function SearchResultsPage() {
+function SearchResultsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -191,5 +191,13 @@ export default function SearchResultsPage() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export default function SearchResultsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchResultsContent />
+    </Suspense>
   );
 }
